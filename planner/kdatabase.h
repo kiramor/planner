@@ -10,10 +10,18 @@ class KDataBase
 public:
     KDataBase();
 
-    bool   AddDay(KDay* NewDay, int index);
+    void printDay(int index);
+
+    bool          isDayExist(int index) const;
+    const QString createDay(int index); //return "" if seccess
+
+    const KDay*   getDay(int index) const;
 
 private:
+    const int maxDaysInBase = 36500;
     QVector<KDay*> Days;
+
+
 
 
 public:

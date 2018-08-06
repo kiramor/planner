@@ -2,26 +2,37 @@
 #define KDAY_H
 
 #include <QVector>
+#include <QDate>
 
 #include "ktask.h"
 
 class KDay
 {
 public:
-    KDay();
+    KDay(int index);
+    KDay(){}
 
-    int  Index;
 
-    int IndexInWeek;
-    int IndexInMonth;
-
-    QVector<KTask> ToDo;
     QVector<KTask> Homework;
     QVector<KTask> Study;
 
     QVector<int>   LinkToEvents;
     QVector<int>   LinkToProjects;
     QVector<int>   LinkToHabits;
+
+private:
+    int  Index = -1;
+
+    QVector<KTask> ToDo;
+
+public:
+    int getDayOfWeek();
+    int getDayOfMonth();
+
+    const QVector<KTask> getListToDo() const {return ToDo;}
+    void addToDo(const KTask& todo);
+
+    void print() const;
 
 };
 

@@ -7,10 +7,12 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+
+    KDataBase dataBase;
+    MainWindow w(dataBase);
     w.show();
 
-    qDebug() << KDataBase::DateToIndex(6, 8, 2018);
+    qDebug() << KDataBase::DateToIndex(7, 3, 2104);
 
     return a.exec();
 }
