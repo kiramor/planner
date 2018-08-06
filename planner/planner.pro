@@ -24,10 +24,16 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    ktask.cpp \
+    kday.cpp \
+    kdatabase.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    ktask.h \
+    kday.h \
+    kdatabase.h
 
 FORMS += \
         mainwindow.ui
