@@ -1,11 +1,25 @@
 #include "kday.h"
+#include "kjsontools.h"
 
 #include <QDebug>
 
-KDay::KDay(int index) :
-    Index(index)
+KDay::KDay(int index, int day, int month, int year) :
+    Index(index), Day(day), Month(month), Year(year)
 {
     qDebug() << "Creating day with index" << index;
+}
+
+void KDay::writeToJson(QJsonObject &json) const
+{
+    json["Index"] = Index;
+
+    json["Date_day"] = Day;
+    json["Date_month"] = Month;
+    json["Date_year"] = Year;
+
+    //tasks
+
+    //...
 }
 
 int KDay::getDayOfWeek()

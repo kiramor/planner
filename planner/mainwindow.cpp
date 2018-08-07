@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "kdatabase.h"
+#include "kjsontools.h"
 
 #include <QDebug>
 
@@ -14,6 +15,18 @@ MainWindow::MainWindow(KDataBase &dataBase, QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+bool MainWindow::saveBase()
+{
+    QString fileName = "d:/planner/database.json";
+
+    QJsonObject json;
+    DataBase.writeToJson(json);
+
+    bool bOK = SaveJsonToFile(json, fileName);
+    qDebug() << "Write result:" << bOK;
+    return bOK;
 }
 
 void MainWindow::on_pbTest1_clicked()
@@ -58,4 +71,9 @@ void MainWindow::updateGuiForDay(int dayIndex)
 void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
 {
     qDebug() << "Cont menu requested for tasks!";
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    saveBase();
 }

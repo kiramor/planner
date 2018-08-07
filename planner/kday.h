@@ -6,24 +6,30 @@
 
 #include "ktask.h"
 
+class QJsonObject;
+
 class KDay
 {
 public:
-    KDay(int index);
+    KDay(int index, int day, int month, int year);
     KDay(){}
 
+    void writeToJson(QJsonObject &json) const;
 
+private:
+    int  Index = -1;
+
+    int Day = -1;
+    int Month = -1;
+    int Year = -1;
+
+    QVector<KTask> ToDo;
     QVector<KTask> Homework;
     QVector<KTask> Study;
 
     QVector<int>   LinkToEvents;
     QVector<int>   LinkToProjects;
     QVector<int>   LinkToHabits;
-
-private:
-    int  Index = -1;
-
-    QVector<KTask> ToDo;
 
 public:
     int getDayOfWeek();

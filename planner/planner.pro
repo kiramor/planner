@@ -28,14 +28,16 @@ SOURCES += \
     ktask.cpp \
     kday.cpp \
     kdatabase.cpp \
-    kspecialtask.cpp
+    kspecialtask.cpp \
+    kjsontools.cpp
 
 HEADERS += \
         mainwindow.h \
     ktask.h \
     kday.h \
     kdatabase.h \
-    kspecialtask.h
+    kspecialtask.h \
+    kjsontools.h
 
 FORMS += \
         mainwindow.ui

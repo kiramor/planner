@@ -1,4 +1,5 @@
 #include "kdatabase.h"
+#include "kjsontools.h"
 
 #include <QDate>
 #include <QDebug>
@@ -29,7 +30,9 @@ const QString KDataBase::createDay(int index)
     if (index < 0 || index > maxDaysInBase) return "Bad index";
     if ( Days.at(index) ) return "Already exists";
 
-    Days[index] = new KDay(index);
+    int day, month, year;
+    IndexToDate(index, day, month, year);
+    Days[index] = new KDay(index, day, month, year);
 
     //temp!
     KTask nt;
@@ -51,13 +54,40 @@ const KDay *KDataBase::getDay(int index) const
         return 0;
 }
 
+void KDataBase::writeToJson(QJsonObject& json) const
+{
+    //Days
+    QJsonArray ar;
+    for (const KDay* day : Days)
+        if (day)
+        {
+            QJsonObject js;
+            day->writeToJson(js);
+            ar.append(js);
+        }
+    json["Days"] = ar;
+
+    //everything else
+}
+
 int KDataBase::DateToIndex(int day, int month, int year)
 {
-    QDate mama(year, month, day);
-    QDate kira(2004, 3, 7);
+    QDate thisOne(year, month, day);
+    QDate startOfKira(2018, 1, 1);
 
-    int days = kira.daysTo(mama);
+    int days = startOfKira.daysTo(thisOne);
     qDebug() << days;
 
     return days;
+}
+
+bool KDataBase::IndexToDate(int index, int &day, int &month, int &year)
+{
+    if (index < 0) return false;
+
+    QDate startOfKira(2018, 1, 1);
+    QDate d = startOfKira.addDays(index);
+    d.getDate(&year, &month, &day);
+
+    return true;
 }

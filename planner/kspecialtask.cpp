@@ -1,7 +1,5 @@
 #include "kspecialtask.h"
-/*
-KSpecialTask::KSpecialTask()
-{
 
-}
-*/
+KSpecialTask::KSpecialTask() :
+    KTask() {}
+

@@ -17,12 +17,16 @@ public:
     MainWindow(KDataBase& dataBase, QWidget *parent = 0);
     ~MainWindow();
 
+    bool saveBase();
+
 private slots:
     void on_pbTest1_clicked();
 
     void on_sbDayIndex_valueChanged(int arg1);
 
     void on_lwToDo_customContextMenuRequested(const QPoint &pos);
+
+    void on_actionSave_triggered();
 
 private:
     KDataBase & DataBase;

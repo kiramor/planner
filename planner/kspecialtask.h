@@ -1,21 +1,20 @@
 #ifndef KSPECIALTASK_H
 #define KSPECIALTASK_H
+
+#include "ktask.h"
+
 #include <QString>
 #include <QVector>
-/*
-class KSpecialTask
+
+class KSpecialTask : public KTask
 {
 public:
     KSpecialTask();
 
-    QString      Name = "No name";
     int          StartDay;
     int          EndDay;
-    bool         Status;
     QVector<int> LinktoTasks;
 
-
 };
-*/
 
 #endif // KSPECIALTASK_H
