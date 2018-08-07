@@ -27,13 +27,15 @@ SOURCES += \
         mainwindow.cpp \
     ktask.cpp \
     kday.cpp \
-    kdatabase.cpp
+    kdatabase.cpp \
+    kspecialtask.cpp
 
 HEADERS += \
         mainwindow.h \
     ktask.h \
     kday.h \
-    kdatabase.h
+    kdatabase.h \
+    kspecialtask.h
 
 FORMS += \
         mainwindow.ui
