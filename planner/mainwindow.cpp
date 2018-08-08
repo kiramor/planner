@@ -64,6 +64,8 @@ void MainWindow::clearGui()
 
 void MainWindow::updateGuiForDay(int dayIndex)
 {
+    clearGui();
+
     if (DataBase.isDayExist(dayIndex))
     {
         KDay* thisDay = DataBase.getDay(dayIndex);
@@ -84,13 +86,46 @@ void MainWindow::updateGuiForDay(int dayIndex)
             ui->lwToDo->addItem(item);
         }
     }
-    else
-        clearGui();
 }
 
+#include <QMenu>
 void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
 {
-    qDebug() << "Cont menu requested for tasks!";
+    QMenu m;
+    int row = -1;
+
+    //QString shownItemType;
+    QListWidgetItem* temp = ui->lwToDo->itemAt(pos);
+
+    QAction* toggleDone = 0;
+
+    if (temp)
+      {
+        //menu triggered at a valid item
+        row = ui->lwToDo->row(temp);
+
+        m.addSeparator();
+        toggleDone = m.addAction("Change done state");
+      }
+    m.addSeparator();
+    QAction* blabla = m.addAction("Do blabla");
+    m.addSeparator();
+
+    QAction* selectedItem = m.exec(ui->lwToDo->mapToGlobal(pos));
+    if (!selectedItem) return; //nothing was selected
+
+    if (selectedItem == toggleDone)
+    {
+        int currentTask = row;
+        int index = ui->sbDayIndex->value();
+        if (DataBase.isDayExist(index))
+        {
+            KDay* thisDay = DataBase.getDay(index);
+            if (currentTask < thisDay->getListToDo().size())
+                thisDay->getListToDo()[currentTask].toggleAcomplishedStatus();
+            updateGuiForDay(index);
+        }
+    }
 }
 
 void MainWindow::on_actionSave_triggered()

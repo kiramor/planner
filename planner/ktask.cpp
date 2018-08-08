@@ -1,6 +1,11 @@
 #include "ktask.h"
 #include "kjsontools.h"
 
+void KTask::toggleAcomplishedStatus()
+{
+    Acomplished = !Acomplished;
+}
+
 void KTask::writeToJson(QJsonObject &json) const
 {
     json["Name"] = Name;

@@ -94,12 +94,9 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QLabel" name="label_2">
+            <widget class="QPushButton" name="pushButton">
              <property name="text">
               <string>To do:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>

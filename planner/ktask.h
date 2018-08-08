@@ -13,6 +13,8 @@ public:
     bool    Acomplished = false;
     int     Priority = 0; // 0-normal, >0 high priority, <0 lower priority
 
+    void toggleAcomplishedStatus();
+
 public:
     void              writeToJson(QJsonObject& json) const;
     const QJsonObject writeToJson() const;
