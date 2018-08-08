@@ -29,12 +29,20 @@ bool MainWindow::saveBase()
     return bOK;
 }
 
+bool MainWindow::loadBase()
+{
+    QString fileName = "d:/planner/database.json";
+
+    QJsonObject json;
+    bool bOK = LoadJsonFromFile(json, fileName);
+    qDebug() << "Read result:"<< bOK;
+    DataBase.readFromJson(json);
+    return bOK;
+}
+
 void MainWindow::on_pbTest1_clicked()
 {
-    DataBase.createDay(11);
-
-
-    DataBase.printDay(11);
+    DataBase.createDay(2);
 }
 
 void MainWindow::on_sbDayIndex_valueChanged(int arg1)
@@ -62,7 +70,13 @@ void MainWindow::updateGuiForDay(int dayIndex)
 
         //tasks
         for (const KTask& todo : DataBase.getDay(dayIndex)->getListToDo())
-            ui->lwToDo->addItem(todo.Name);
+        {
+            QListWidgetItem *item = new QListWidgetItem(todo.Name);
+            if (todo.Acomplished) item->setBackgroundColor(Qt::green);
+            item->setCheckState( todo.Acomplished ? Qt::Checked : Qt::Unchecked);
+            ui->lwToDo->addItem(item);
+
+        }
     }
     else
         clearGui();
@@ -76,4 +90,9 @@ void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
 void MainWindow::on_actionSave_triggered()
 {
     saveBase();
+}
+
+void MainWindow::on_actionLoad_triggered()
+{
+    loadBase();
 }

@@ -2,16 +2,21 @@
 #define KTASK_H
 
 #include <QString>
+#include <QJsonObject>
 
 class KTask
 {
 public:
-    KTask();
+    KTask() {}
 
     QString Name = "NoName";
-    bool    Status = false;
+    bool    Acomplished = false;
     int     Priority = 0; // 0-normal, >0 high priority, <0 lower priority
-    QString AfterComment;
+
+public:
+    void              writeToJson(QJsonObject& json) const;
+    const QJsonObject writeToJson() const;
+    void              readFromJson(const QJsonObject& json);
 };
 
 #endif // KTASK_H

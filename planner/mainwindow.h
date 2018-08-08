@@ -18,6 +18,7 @@ public:
     ~MainWindow();
 
     bool saveBase();
+    bool loadBase();
 
 private slots:
     void on_pbTest1_clicked();
@@ -27,6 +28,8 @@ private slots:
     void on_lwToDo_customContextMenuRequested(const QPoint &pos);
 
     void on_actionSave_triggered();
+
+    void on_actionLoad_triggered();
 
 private:
     KDataBase & DataBase;

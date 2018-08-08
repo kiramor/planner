@@ -14,6 +14,7 @@ public:
     int          StartDay;
     int          EndDay;
     QVector<QVector<int>> LinktoTasks;//(?) I want to have several lists of preparations
+    QString AfterComment;
 
 };
 

@@ -6,6 +6,13 @@
 
 KDataBase::KDataBase()
 {
+    clearBase();
+}
+
+void KDataBase::clearBase()
+{
+    for (KDay* day : Days) delete day;
+
     Days = QVector<KDay*>(maxDaysInBase, 0);
 }
 
@@ -36,9 +43,13 @@ const QString KDataBase::createDay(int index)
 
     //temp!
     KTask nt;
-    nt.Name = "Generic task # 1";
+    nt.Name = "Generic task # 1";    
     Days[index]->addToDo(nt);
+    nt.Name = "Generic task # 2";
+    Days[index]->addToDo(nt);
+    nt.Priority = 1;
     nt.Name = "Shout out loudlyyyy";
+    nt.Acomplished = true;
     Days[index]->addToDo(nt);
 
     //temp!
@@ -68,6 +79,27 @@ void KDataBase::writeToJson(QJsonObject& json) const
     json["Days"] = ar;
 
     //everything else
+}
+
+void KDataBase::readFromJson(const QJsonObject &json)
+{
+    clearBase();
+
+    QJsonArray ar;
+    parseJson(json, "Days", ar);
+    for (int i=0; i<ar.size(); i++)
+    {
+        KDay* day = new KDay();
+        const QJsonObject js = ar.at(i).toObject();
+        day->readFromJson(js);
+
+        int index = DateToIndex(day->getDay(), day->getMonth(), day->getYear());
+        if (index > -1)
+            Days[index] = day;
+        else
+            qDebug() << "Something went wrong...";
+    }
+
 }
 
 int KDataBase::DateToIndex(int day, int month, int year)

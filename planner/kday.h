@@ -15,6 +15,11 @@ public:
     KDay(){}
 
     void writeToJson(QJsonObject &json) const;
+    void readFromJson(const QJsonObject &json);
+
+    int getDay() const {return Day;}
+    int getMonth() const {return Month;}
+    int getYear() const {return Year;}
 
 private:
     int  Index = -1;

@@ -18,8 +18,30 @@ void KDay::writeToJson(QJsonObject &json) const
     json["Date_year"] = Year;
 
     //tasks
+    QJsonArray ar;
+    for (const KTask& task : ToDo)
+        ar << task.writeToJson();
+    json["ToDo"] = ar;
+}
 
-    //...
+void KDay::readFromJson(const QJsonObject &json)
+{
+    parseJson(json, "Index", Index);
+
+    parseJson(json, "Date_day", Day);
+    parseJson(json, "Date_month", Month);
+    parseJson(json, "Date_year", Year);
+
+    ToDo.clear();
+    QJsonArray ar;
+    parseJson(json, "ToDo", ar);
+    for (int i=0; i<ar.size(); i++)
+    {
+        QJsonObject js = ar.at(i).toObject();
+        KTask task;
+        task.readFromJson(js);
+        ToDo << task;
+    }
 }
 
 int KDay::getDayOfWeek()
@@ -45,8 +67,8 @@ void KDay::print() const
     qDebug() << "Number of Homeworks:"<<Homework.size();
     qDebug() << "Number of Studies:"<<Study.size();
     qDebug() << "-----------------";
-    qDebug() << "Lineked to # of events:"<<LinkToEvents.size();
-    qDebug() << "Lineked to # of projucts:"<<LinkToProjects.size();
-    qDebug() << "Lineked to # of hobbits:"<<LinkToHabits.size();
-    qDebug() << "***************";
+    //qDebug() << "Lineked to # of events:"<<LinkToEvents.size();
+    //qDebug() << "Lineked to # of projucts:"<<LinkToProjects.size();
+    //qDebug() << "Lineked to # of hobbits:"<<LinkToHabits.size();
+    //qDebug() << "***************";
 }
