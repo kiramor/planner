@@ -13,7 +13,7 @@ public:
 
     int          StartDay;
     int          EndDay;
-    QVector<int> LinktoTasks;
+    QVector<QVector<int>> LinktoTasks;//(?) I want to have several lists of preparations
 
 };
 
