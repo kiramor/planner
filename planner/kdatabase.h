@@ -16,6 +16,7 @@ public:
     const QString createDay(int index); //return "" if seccess
 
     const KDay*   getDay(int index) const;
+    KDay*         getDay(int index);
 
     void writeToJson(QJsonObject &json) const;
     void readFromJson(const QJsonObject &json);

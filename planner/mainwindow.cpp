@@ -42,7 +42,7 @@ bool MainWindow::loadBase()
 
 void MainWindow::on_pbTest1_clicked()
 {
-    DataBase.createDay(2);
+    DataBase.createDay(1);
 }
 
 void MainWindow::on_sbDayIndex_valueChanged(int arg1)
@@ -66,16 +66,22 @@ void MainWindow::updateGuiForDay(int dayIndex)
 {
     if (DataBase.isDayExist(dayIndex))
     {
-        ui->labDayInfo->setText("lalalaaaaaaaaaaa");
+        KDay* thisDay = DataBase.getDay(dayIndex);
+
+        QString str = thisDay->getQDate().toString("  dddd, dd of MMMM, yyyy");
+        ui->labDayInfo->setText(str);
 
         //tasks
-        for (const KTask& todo : DataBase.getDay(dayIndex)->getListToDo())
+        QVector<KTask>& container = thisDay->getListToDo();
+        KDay::sortTasks(container);
+
+        for (const KTask& todo : thisDay->getListToDo())
         {
             QListWidgetItem *item = new QListWidgetItem(todo.Name);
-            if (todo.Acomplished) item->setBackgroundColor(Qt::green);
-            item->setCheckState( todo.Acomplished ? Qt::Checked : Qt::Unchecked);
-            ui->lwToDo->addItem(item);
+            if (todo.Acomplished) item->setBackgroundColor(Qt::darkGreen);
 
+            //item->setCheckState( todo.Acomplished ? Qt::Checked : Qt::Unchecked);
+            ui->lwToDo->addItem(item);
         }
     }
     else

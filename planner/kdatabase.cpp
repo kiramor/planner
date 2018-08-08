@@ -47,9 +47,25 @@ const QString KDataBase::createDay(int index)
     Days[index]->addToDo(nt);
     nt.Name = "Generic task # 2";
     Days[index]->addToDo(nt);
-    nt.Priority = 1;
+    nt.Priority = 4;
+    nt.Name = "Generic task # 3";
+    Days[index]->addToDo(nt);
+    nt.Priority = 2;
+    nt.Acomplished = true;
+    nt.Name = "Generic task # 4";
+    Days[index]->addToDo(nt);
+    nt.Priority = -1;
+
     nt.Name = "Shout out loudlyyyy";
     nt.Acomplished = true;
+    Days[index]->addToDo(nt);
+    nt.Name = "Shout out again";
+    nt.Acomplished = false;
+    nt.Priority = 6;
+    Days[index]->addToDo(nt);
+    nt.Name = "Shout out silently";
+    nt.Acomplished = false;
+    nt.Priority = 2;
     Days[index]->addToDo(nt);
 
     //temp!
@@ -61,6 +77,14 @@ const KDay *KDataBase::getDay(int index) const
 {
     if (isDayExist(index))
         return Days.at(index);
+    else
+        return 0;
+}
+
+KDay *KDataBase::getDay(int index)
+{
+    if (isDayExist(index))
+        return Days[index];
     else
         return 0;
 }
