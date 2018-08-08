@@ -27,8 +27,10 @@ private:
     QVector<KTask> Homework;
     QVector<KTask> Study;
 
-    QVector<int>   LinkToEvents;
-    QVector<int>   LinkToProjects;
+    //QVector<int>   LinkToEvents;
+    //QVector<int>   LinkToProjects;
+    QVector<int>   LinkToSpecialTasks;
+    QVector<int>   LinkToGradedST;
     QVector<int>   LinkToHabits;
 
 public:
