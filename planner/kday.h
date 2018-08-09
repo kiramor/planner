@@ -37,7 +37,7 @@ private:
     //QVector<int>   LinkToEvents;
     //QVector<int>   LinkToProjects;
     QVector<int>   LinkToSpecialTasks;
-    QVector<int>   LinkToGradedST;
+    QVector<int>   LinkToGradedSTs;
     QVector<int>   LinkToHabits;
 
 public:

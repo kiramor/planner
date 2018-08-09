@@ -71,10 +71,10 @@ void KDay::print() const
     qDebug() << "Number of Studies:"<<Study.size();
     qDebug() << "-----------------";
 
-    //qDebug() << "Lineked to # of events:"<<LinkToEvents.size();
-    //qDebug() << "Lineked to # of projucts:"<<LinkToProjects.size();
-    //qDebug() << "Lineked to # of hobbits:"<<LinkToHabits.size();
-    //qDebug() << "***************";
+    qDebug() << "Lineked to # of special tasks:"<<LinkToSpecialTasks.size();
+    qDebug() << "Lineked to # of graded especial tasks:"<<LinkToGradedSTs.size();
+    qDebug() << "Lineked to # of hobbits:"<<LinkToHabits.size();
+    qDebug() << "***************";
 }
 
 void KDay::sortTasks(QVector<KTask> & container)
