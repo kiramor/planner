@@ -16,13 +16,16 @@ public:
     const QString createDay(int index); //return "" if seccess
 
     const KDay*   getDay(int index) const;
+    KDay*         getDay(int index);
 
     void writeToJson(QJsonObject &json) const;
+    void readFromJson(const QJsonObject &json);
 
 private:
     const int maxDaysInBase = 36500;
     QVector<KDay*> Days;
 
+    void clearBase();
 public:
     static int  DateToIndex(int day, int month, int year);
     static bool IndexToDate(int index, int& day, int& month, int& year);

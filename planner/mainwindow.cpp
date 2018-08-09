@@ -29,12 +29,20 @@ bool MainWindow::saveBase()
     return bOK;
 }
 
+bool MainWindow::loadBase()
+{
+    QString fileName = "d:/planner/database.json";
+
+    QJsonObject json;
+    bool bOK = LoadJsonFromFile(json, fileName);
+    qDebug() << "Read result:"<< bOK;
+    DataBase.readFromJson(json);
+    return bOK;
+}
+
 void MainWindow::on_pbTest1_clicked()
 {
-    DataBase.createDay(11);
-
-
-    DataBase.printDay(11);
+    DataBase.createDay(1);
 }
 
 void MainWindow::on_sbDayIndex_valueChanged(int arg1)
@@ -56,24 +64,76 @@ void MainWindow::clearGui()
 
 void MainWindow::updateGuiForDay(int dayIndex)
 {
+    clearGui();
+
     if (DataBase.isDayExist(dayIndex))
     {
-        ui->labDayInfo->setText("lalalaaaaaaaaaaa");
+        KDay* thisDay = DataBase.getDay(dayIndex);
+
+        QString str = thisDay->getQDate().toString("  dddd, dd of MMMM, yyyy");
+        ui->labDayInfo->setText(str);
 
         //tasks
-        for (const KTask& todo : DataBase.getDay(dayIndex)->getListToDo())
-            ui->lwToDo->addItem(todo.Name);
+        QVector<KTask>& container = thisDay->getListToDo();
+        KDay::sortTasks(container);
+
+        for (const KTask& todo : thisDay->getListToDo())
+        {
+            QListWidgetItem *item = new QListWidgetItem(todo.Name);
+            if (todo.Acomplished) item->setBackgroundColor(Qt::darkGreen);
+
+            //item->setCheckState( todo.Acomplished ? Qt::Checked : Qt::Unchecked);
+            ui->lwToDo->addItem(item);
+        }
     }
-    else
-        clearGui();
 }
 
+#include <QMenu>
 void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
 {
-    qDebug() << "Cont menu requested for tasks!";
+    QMenu m;
+    int row = -1;
+
+    //QString shownItemType;
+    QListWidgetItem* temp = ui->lwToDo->itemAt(pos);
+
+    QAction* toggleDone = 0;
+
+    if (temp)
+      {
+        //menu triggered at a valid item
+        row = ui->lwToDo->row(temp);
+
+        m.addSeparator();
+        toggleDone = m.addAction("Change done state");
+      }
+    m.addSeparator();
+    QAction* blabla = m.addAction("Do blabla");
+    m.addSeparator();
+
+    QAction* selectedItem = m.exec(ui->lwToDo->mapToGlobal(pos));
+    if (!selectedItem) return; //nothing was selected
+
+    if (selectedItem == toggleDone)
+    {
+        int currentTask = row;
+        int index = ui->sbDayIndex->value();
+        if (DataBase.isDayExist(index))
+        {
+            KDay* thisDay = DataBase.getDay(index);
+            if (currentTask < thisDay->getListToDo().size())
+                thisDay->getListToDo()[currentTask].toggleAcomplishedStatus();
+            updateGuiForDay(index);
+        }
+    }
 }
 
 void MainWindow::on_actionSave_triggered()
 {
     saveBase();
+}
+
+void MainWindow::on_actionLoad_triggered()
+{
+    loadBase();
 }
