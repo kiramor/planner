@@ -45,8 +45,8 @@ void KDay::print() const
     qDebug() << "Number of Homeworks:"<<Homework.size();
     qDebug() << "Number of Studies:"<<Study.size();
     qDebug() << "-----------------";
-    qDebug() << "Lineked to # of events:"<<LinkToEvents.size();
-    qDebug() << "Lineked to # of projucts:"<<LinkToProjects.size();
+    qDebug() << "Lineked to # of SpecialTasks:"<<LinkToSpecialTasks.size();
+    qDebug() << "Lineked to # of GradedST:"<<LinkToGradedST.size();
     qDebug() << "Lineked to # of hobbits:"<<LinkToHabits.size();
     qDebug() << "***************";
 }
