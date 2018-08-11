@@ -12,6 +12,9 @@ MainWindow::MainWindow(KDataBase &dataBase, QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->lwToDo->setDragDropMode(QAbstractItemView::DragDrop);
+    ui->lwToDo->setDefaultDropAction(Qt::MoveAction);
 }
 
 MainWindow::~MainWindow()
