@@ -178,15 +178,17 @@ void MainWindow::on_pbCalendar_clicked()
         lh->addWidget(cancel);
         QPushButton* pbOK = new QPushButton("Select", this);
         lh->addWidget(pbOK);
+        /*
         QPushButton* pbThisDay = new QPushButton(this);
         pbThisDay->setText("back to the present");
         l->addWidget(pbThisDay);
+        */
     l->addLayout(lh);
 
 
     QObject::connect(pbOK, &QPushButton::clicked, m, &QDialog::accept);
     QObject::connect(cancel, &QPushButton::clicked, m, &QDialog::reject);
-    QObject::connect(pbThisDay, &QPushButton::clicked, [&cw](){cw->setSelectedDate(QDate::currentDate());});
+    //QObject::connect(pbThisDay, &QPushButton::clicked, [&cw](){cw->setSelectedDate(QDate::currentDate());});
 
     m->exec();
 
@@ -200,4 +202,11 @@ void MainWindow::on_pbCalendar_clicked()
     }
 
     delete m;
+}
+
+void MainWindow::on_pbToday_clicked()
+{
+   MainWindow::openDate = QDate::currentDate();
+   int d =KDataBase::DateToIndex(openDate.day(), openDate.month(), openDate.year());
+   updateGuiForDay(d);
 }

@@ -37,6 +37,8 @@ private slots:
 
     void on_pbCalendar_clicked();
 
+    void on_pbToday_clicked();
+
 private:
     KDataBase & DataBase;
     Ui::MainWindow *ui;
