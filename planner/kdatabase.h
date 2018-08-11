@@ -18,6 +18,9 @@ public:
     const KDay*   getDay(int index) const;
     KDay*         getDay(int index);
 
+    const KDay*   getDay(QDate &d) const;
+    KDay*         getDay(QDate &d);
+
     void writeToJson(QJsonObject &json) const;
     void readFromJson(const QJsonObject &json);
 

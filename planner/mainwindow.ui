@@ -18,7 +18,7 @@
     <item>
      <widget class="QPushButton" name="pbTest1">
       <property name="text">
-       <string>Fill day 1</string>
+       <string>Fill Today</string>
       </property>
      </widget>
     </item>
@@ -108,7 +108,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="pbToDo">
              <property name="text">
               <string>To do:</string>
              </property>

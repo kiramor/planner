@@ -2,10 +2,12 @@
 #include "ui_mainwindow.h"
 #include "kdatabase.h"
 #include "kjsontools.h"
+#include "ktaskwindow.h"
 #include <QDebug>
 
 #include <QDialog>
 #include <QCalendarWidget>
+
 
 MainWindow::MainWindow(KDataBase &dataBase, QWidget *parent) :
     QMainWindow(parent), DataBase(dataBase),
@@ -46,14 +48,16 @@ bool MainWindow::loadBase()
 }
 
 void MainWindow::on_pbTest1_clicked()
-{
-    DataBase.createDay(1);
+{   //temp!!
+    int tempd =KDataBase::DateToIndex(QDate::currentDate().day(), QDate::currentDate().month(), QDate::currentDate().year());
+    DataBase.createDay(tempd);
+    //temp!!
 }
 
 void MainWindow::on_sbDayIndex_valueChanged(int arg1)
 {
     //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListToDo(), ui->lwToDo);
-    updateGuiForDay(arg1);
+    //updateGuiForDay(arg1);
     //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListHomework(), ui->lwHome);
     //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListStudy(), ui->lwStudy);
     //int day, month, year;
@@ -144,11 +148,13 @@ void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
     if (selectedItem == toggleDone)
     {
         int currentTask = row;
-        int index = ui->sbDayIndex->value();
+        int index = KDataBase::DateToIndex(openDate.day(), openDate.month(), openDate.year());
+        //qDebug() <<index <<"<-index";
         if (DataBase.isDayExist(index))
         {
-            KDay* thisDay = DataBase.getDay(index);
+            KDay* thisDay = DataBase.getDay(openDate);
             if (currentTask < thisDay->getListToDo().size())
+                //qDebug() <<"huh wanna toggle?";
                 thisDay->getListToDo()[currentTask].toggleAcomplishedStatus();
             updateGuiForDay(index);
         }
@@ -175,12 +181,16 @@ void MainWindow::on_pbCalendar_clicked()
     l->addWidget(cw);
     cw->setSelectedDate(openDate);
 
+
     QHBoxLayout* lh = new QHBoxLayout();
+
+        QPushButton* pbOK = new QPushButton("Select", this);
+        lh->addWidget(pbOK);
+
         QPushButton* cancel = new QPushButton(this);
         cancel->setText("cancel");
         lh->addWidget(cancel);
-        QPushButton* pbOK = new QPushButton("Select", this);
-        lh->addWidget(pbOK);
+
         /*
         QPushButton* pbThisDay = new QPushButton(this);
         pbThisDay->setText("back to the present");
@@ -212,4 +222,22 @@ void MainWindow::on_pbToday_clicked()
    MainWindow::openDate = QDate::currentDate();
    int d =KDataBase::DateToIndex(openDate.day(), openDate.month(), openDate.year());
    updateGuiForDay(d);
+}
+
+void MainWindow::on_pbToDo_clicked()
+{
+    KDay* thisDay = DataBase.getDay(openDate);
+    if (!thisDay)
+    {
+        qDebug() << "aaaaaaaaaaa   den = 0";
+
+    }
+    qDebug() << "pointer:"<<thisDay;
+    thisDay->print();
+
+    //KTaskWindow tw(thisDay->getListToDo());
+    KTaskWindow* tw = new KTaskWindow(thisDay->getListToDo());
+    tw->show();
+
+
 }

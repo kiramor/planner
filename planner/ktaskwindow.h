@@ -2,6 +2,8 @@
 #define KTASKWINDOW_H
 
 #include <QMainWindow>
+#include <QVector>
+#include "ktask.h"
 
 namespace Ui {
 class KTaskWindow;
@@ -12,11 +14,14 @@ class KTaskWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit KTaskWindow(QWidget *parent = 0);
+    explicit KTaskWindow(QVector<KTask> &container, QWidget *parent = 0);
     ~KTaskWindow();
+
+    void fillTable(QVector<KTask> &container);
 
 private:
     Ui::KTaskWindow *ui;
+    QVector<KTask> & Tasks;
 };
 
 #endif // KTASKWINDOW_H

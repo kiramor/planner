@@ -149,6 +149,25 @@ KDay *KDataBase::getDay(int index)
         return 0;
 }
 
+const KDay *KDataBase::getDay(QDate&d) const
+{
+    int index = DateToIndex(d.day(), d.month(),d.year());
+    if (isDayExist(index))
+        return Days[index];
+    else
+        return 0;
+}
+
+KDay *KDataBase::getDay(QDate &d)
+{
+    int index = DateToIndex(d.day(), d.month(),d.year());
+    if (isDayExist(index))
+        return Days[index];
+    else
+        return 0;
+    //getDay(index)
+}
+
 void KDataBase::writeToJson(QJsonObject& json) const
 {
     //Days

@@ -4,6 +4,7 @@
 void KTask::toggleAcomplishedStatus()
 {
     Acomplished = !Acomplished;
+    //qDebug() <<"toggled!!";
 }
 
 void KTask::writeToJson(QJsonObject &json) const
