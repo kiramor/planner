@@ -13,6 +13,7 @@ public:
     void printDay(int index);
 
     bool          isDayExist(int index) const;
+    //bool          isDayExist(QDate &dt) const;
     const QString createDay(int index); //return "" if seccess
 
     const KDay*   getDay(int index) const;
