@@ -42,31 +42,91 @@ const QString KDataBase::createDay(int index)
     Days[index] = new KDay(index, day, month, year);
 
     //temp!
+    /*
+    KTask home;
+    home.Name = "Homework 1";
+    Days[index]->addToList(home, Days[index]->getListHomework());
+    home.Priority = 4;
+    home.Acomplished = false;
+    home.Name = "Homework 2";
+    Days[index]->addToList(home, Days[index]->getListHomework());
+    home.Acomplished = false;
+    home.Name = "Homework 3";
+    Days[index]->addToList(home, Days[index]->getListHomework());
+    home.Acomplished = true;
+    home.Priority = 5;
+
+    KTask stud;
+    stud.Name = "Study One";
+    Days[index]->addToList(home, Days[index]->getListStudy());
+    stud.Priority = 1;
+    stud.Acomplished = true;
+    stud.Name = "Study Two";
+    Days[index]->addToList(home, Days[index]->getListStudy());
+    stud.Acomplished = true;
+    stud.Name = "Study Three";
+    Days[index]->addToList(home, Days[index]->getListStudy());
+    stud.Priority = -1;
+    stud.Acomplished = false;
+    */
+
     KTask nt;
     nt.Name = "Generic task # 1";    
-    Days[index]->addToDo(nt);
+    Days[index]->addToList(nt, Days[index]->getListToDo());
     nt.Name = "Generic task # 2";
-    Days[index]->addToDo(nt);
+    Days[index]->addToList(nt, Days[index]->getListToDo());
     nt.Priority = 4;
     nt.Name = "Generic task # 3";
-    Days[index]->addToDo(nt);
+    Days[index]->addToList(nt, Days[index]->getListToDo());
     nt.Priority = 2;
     nt.Acomplished = true;
     nt.Name = "Generic task # 4";
-    Days[index]->addToDo(nt);
+    Days[index]->addToList(nt, Days[index]->getListToDo());
     nt.Priority = -1;
 
     nt.Name = "Shout out loudlyyyy";
     nt.Acomplished = true;
-    Days[index]->addToDo(nt);
+    Days[index]->addToList(nt, Days[index]->getListToDo());
     nt.Name = "Shout out again";
     nt.Acomplished = false;
     nt.Priority = 6;
-    Days[index]->addToDo(nt);
+    Days[index]->addToList(nt, Days[index]->getListToDo());
     nt.Name = "Shout out silently";
     nt.Acomplished = false;
     nt.Priority = 2;
-    Days[index]->addToDo(nt);
+    Days[index]->addToList(nt, Days[index]->getListToDo());
+
+
+
+    nt.Name = "Homework 1";
+    nt.Priority = 4;
+    nt.Acomplished = false;
+    Days[index]->addToList(nt, Days[index]->getListHomework());
+
+    nt.Name = "Homework 2";
+    nt.Acomplished = false;
+    Days[index]->addToList(nt, Days[index]->getListHomework());
+
+    nt.Name = "Homework 3";
+    nt.Acomplished = true;
+    nt.Priority = 5;
+    Days[index]->addToList(nt, Days[index]->getListHomework());
+
+
+    nt.Name = "Study One";
+    nt.Priority = 1;
+    nt.Acomplished = true;
+    Days[index]->addToList(nt, Days[index]->getListStudy());
+
+    nt.Name = "Study Two";
+    nt.Acomplished = true;
+    Days[index]->addToList(nt, Days[index]->getListStudy());
+
+    nt.Name = "Study Three";
+    nt.Priority = -1;
+    nt.Acomplished = false;
+    Days[index]->addToList(nt, Days[index]->getListStudy());
+
 
     //temp!
 

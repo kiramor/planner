@@ -2,17 +2,21 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDate>
 
 namespace Ui {
 class MainWindow;
 }
 
 class KDataBase;
+class KTask;
+class QListWidget;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+public:
+    QDate openDate= QDate::currentDate();
 public:
     MainWindow(KDataBase& dataBase, QWidget *parent = 0);
     ~MainWindow();
@@ -31,6 +35,8 @@ private slots:
 
     void on_actionLoad_triggered();
 
+    void on_pbCalendar_clicked();
+
 private:
     KDataBase & DataBase;
     Ui::MainWindow *ui;
@@ -39,6 +45,7 @@ private:
 private:
     void clearGui();
     void updateGuiForDay(int dayIndex);
+    void updateTaskWidget(QVector<KTask> &container, QListWidget *lw);
 
 };
 

@@ -46,7 +46,15 @@ public:
 
     const QVector<KTask>& getListToDo() const {return ToDo;}
     QVector<KTask>&       getListToDo() {return ToDo;}
-    void addToDo(const KTask& todo);
+    const QVector<KTask>& getListHomework() const {return Homework;}
+    QVector<KTask>&       getListHomework() {return Homework;}
+    const QVector<KTask>& getListStudy() const {return Study;}
+    QVector<KTask>&       getListStudy() {return Study;}
+    //void addToDo(const KTask& todo);
+    void addToList(const KTask& todo, QVector<KTask> &list);
+    //void addHome(const KTask& home);
+    //void addStudy(const KTask& study);
+
 
     void print() const;
 

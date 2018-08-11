@@ -56,12 +56,27 @@ int KDay::getDayOfMonth()
 {
     return 0;
 }
-
+/*
 void KDay::addToDo(const KTask &todo)
 {
     ToDo.append(todo);
 }
+*/
+void KDay::addToList(const KTask &todo, QVector<KTask> &list)
+{
+    list.append(todo);
+}
+/*
+void KDay::addHome(const KTask &home)
+{
+    Homework.append(home);
+}
 
+void KDay::addStudy(const KTask &study)
+{
+    Study.append(study);
+}
+*/
 void KDay::print() const
 {
     qDebug() << "***************";

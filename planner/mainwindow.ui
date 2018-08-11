@@ -38,6 +38,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="pbCalendar">
+        <property name="text">
+         <string>Calendar</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Inspect day #</string>

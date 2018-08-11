@@ -2,8 +2,10 @@
 #include "ui_mainwindow.h"
 #include "kdatabase.h"
 #include "kjsontools.h"
-
 #include <QDebug>
+
+#include <QDialog>
+#include <QCalendarWidget>
 
 MainWindow::MainWindow(KDataBase &dataBase, QWidget *parent) :
     QMainWindow(parent), DataBase(dataBase),
@@ -47,7 +49,15 @@ void MainWindow::on_pbTest1_clicked()
 
 void MainWindow::on_sbDayIndex_valueChanged(int arg1)
 {
+    //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListToDo(), ui->lwToDo);
     updateGuiForDay(arg1);
+    //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListHomework(), ui->lwHome);
+    //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListStudy(), ui->lwStudy);
+    //int day, month, year;
+    //QDate d;
+    //KDataBase::IndexToDate(arg1, day, month, year);
+
+
 }
 
 void MainWindow::clearGui()
@@ -62,9 +72,11 @@ void MainWindow::clearGui()
     ui->lwToDo->clear();
 }
 
+//void MainWindow::updateGuiForDay(int dayIndex, QVector<KTask> &container, QListWidget *lw)
 void MainWindow::updateGuiForDay(int dayIndex)
 {
     clearGui();
+    qDebug() <<"updating day with index:" <<dayIndex;
 
     if (DataBase.isDayExist(dayIndex))
     {
@@ -74,19 +86,31 @@ void MainWindow::updateGuiForDay(int dayIndex)
         ui->labDayInfo->setText(str);
 
         //tasks
-        QVector<KTask>& container = thisDay->getListToDo();
-        KDay::sortTasks(container);
+        //QVector<KTask>& container = thisDay->getListToDo();
 
-        for (const KTask& todo : thisDay->getListToDo())
-        {
-            QListWidgetItem *item = new QListWidgetItem(todo.Name);
-            if (todo.Acomplished) item->setBackgroundColor(Qt::darkGreen);
-
-            //item->setCheckState( todo.Acomplished ? Qt::Checked : Qt::Unchecked);
-            ui->lwToDo->addItem(item);
-        }
+        updateTaskWidget(thisDay->getListToDo(), ui->lwToDo);
+        //updateTaskWidget(container, lw);
+        updateTaskWidget(thisDay->getListHomework(), ui->lwHome);
+        updateTaskWidget(thisDay->getListStudy(), ui->lwStudy);
     }
 }
+
+void MainWindow::updateTaskWidget(QVector<KTask> &container, QListWidget *lw)
+{
+    KDay::sortTasks(container);
+
+    for (const KTask& todo : container)
+    {
+        QListWidgetItem *item = new QListWidgetItem(todo.Name);
+        if (todo.Acomplished) item->setBackgroundColor(Qt::darkGreen);
+
+        //item->setCheckState( todo.Acomplished ? Qt::Checked : Qt::Unchecked);
+        lw->addItem(item);
+    }
+}
+
+
+
 
 #include <QMenu>
 void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
@@ -136,4 +160,44 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionLoad_triggered()
 {
     loadBase();
+}
+
+void MainWindow::on_pbCalendar_clicked()
+{
+    QDialog* m = new QDialog(this);
+    m->setWindowTitle("Select date");
+
+    QVBoxLayout* l = new QVBoxLayout(m);
+        QCalendarWidget* cw = new QCalendarWidget(m);
+    l->addWidget(cw);
+    cw->setSelectedDate(openDate);
+
+    QHBoxLayout* lh = new QHBoxLayout();
+        QPushButton* cancel = new QPushButton(this);
+        cancel->setText("cancel");
+        lh->addWidget(cancel);
+        QPushButton* pbOK = new QPushButton("Select", this);
+        lh->addWidget(pbOK);
+        QPushButton* pbThisDay = new QPushButton(this);
+        pbThisDay->setText("back to the present");
+        l->addWidget(pbThisDay);
+    l->addLayout(lh);
+
+
+    QObject::connect(pbOK, &QPushButton::clicked, m, &QDialog::accept);
+    QObject::connect(cancel, &QPushButton::clicked, m, &QDialog::reject);
+    QObject::connect(pbThisDay, &QPushButton::clicked, [&cw](){cw->setSelectedDate(QDate::currentDate());});
+
+    m->exec();
+
+    if (m->result()==QDialog::Accepted)
+    {
+        QDate d = cw->selectedDate();
+        qDebug() << "Papa selected"<< d.toString();
+        int indx = KDataBase::DateToIndex(d.day(), d.month(), d.year());
+        updateGuiForDay(indx);
+        MainWindow::openDate = d;
+    }
+
+    delete m;
 }
