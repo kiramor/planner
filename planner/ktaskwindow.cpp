@@ -20,66 +20,42 @@ KTaskWindow::~KTaskWindow()
 
 void KTaskWindow::fillTable(QVector<KTask> &container)
 {
-    if (true)//container.size() >0)
-    {
+    ui->twTable->clear();
+    if (container.isEmpty()) return;
+
         //ui->twTable->insertRow(0);
         //ui->twTable->setItem(0, 0, new QTableWidgetItem("Hello"));
         KDay::sortTasks(container);
 
-
         //qDebug() <<"size of container:"<<container.size();
 
         for (int i=0; i<container.size(); i++)
-        {
             ui->twTable->insertRow(i);
-        }
 
-        int row=0;
+        int row = 0;
         for (const KTask& tsk : container)
         {
             //qDebug() <<"size of container:"<<container.size() <<row;
-            QTableWidgetItem* item =new QTableWidgetItem(tsk.Name);
+            QTableWidgetItem* item = new QTableWidgetItem(tsk.Name);
             ui->twTable->setItem(row, 0, item);
-            row++;
 
-        }
-
-        row=0;
-        for (const KTask& tsk : container)
-        {
-            if (tsk.Acomplished== true)
+            if (tsk.Acomplished == true)
             {
                 //qDebug() <<"size of container:"<<container.size() <<row;
-                QTableWidgetItem* item =new QTableWidgetItem("Done");
-                ui->twTable->setItem(row, 1, item);
+                item = new QTableWidgetItem("Done");
                 item->setBackgroundColor(Qt::darkGreen);
+                ui->twTable->setItem(row, 1, item);
             }
             else
             {
-                QTableWidgetItem* item =new QTableWidgetItem("Not Done");
+                item = new QTableWidgetItem("Not Done");
                 ui->twTable->setItem(row, 1, item);
             }
-            row++;
-        }
-        row=0;
-        for (const KTask& tsk : container)
-        {
+
             qDebug() <<"size of container:"<<container.size() <<row <<tsk.Priority;
-            QTableWidgetItem* item =new QTableWidgetItem(QString::number(tsk.Priority));
+            item = new QTableWidgetItem(QString::number(tsk.Priority));
             ui->twTable->setItem(row, 2, item);
+
             row++;
         }
-
-            /*QTableWidgetItem *item = new QTableWidgetItem(todo.Name);
-            if (todo.Acomplished) item->setBackgroundColor(Qt::darkGreen);
-            //twTable.addItem(item);
-            ui->twTable->editItem(item);
-
-            int row=0;
-            int col=0;
-            //ui->twTable->setCellWidget(row++, col++, ui->twTable);
-            ui->twTable->setItem(0, 1, new QTableWidgetItem("Hello"));*/
-
-
-    }
 }
