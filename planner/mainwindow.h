@@ -16,8 +16,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    QDate openDate= QDate::currentDate();
-public:
     MainWindow(KDataBase& dataBase, QWidget *parent = 0);
     ~MainWindow();
 
@@ -26,31 +24,22 @@ public:
 
 private slots:
     void on_pbTest1_clicked();
-
-    void on_sbDayIndex_valueChanged(int arg1);
-
     void on_lwToDo_customContextMenuRequested(const QPoint &pos);
-
     void on_actionSave_triggered();
-
     void on_actionLoad_triggered();
-
     void on_pbCalendar_clicked();
-
     void on_pbToday_clicked();
-
-    //void on_pushButton_clicked();
-
     void on_pbToDo_clicked();
 
 private:
     KDataBase & DataBase;
     Ui::MainWindow *ui;
 
+    QDate OpenDate;
 
 private:
     void clearGui();
-    void updateGuiForDay(int dayIndex);
+    void updateGuiForOpenDay();
     void updateTaskWidget(QVector<KTask> &container, QListWidget *lw);
 
 };

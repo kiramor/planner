@@ -16,8 +16,9 @@ void KDataBase::clearBase()
     Days = QVector<KDay*>(maxDaysInBase, 0);
 }
 
-void KDataBase::printDay(int index)
+void KDataBase::printDay(QDate &dt)
 {
+    const int index = DateToIndex(dt);
     if (index < 0 || index > maxDaysInBase)
         qDebug() << "Bad index";
     else if ( !Days.at(index) )
@@ -26,49 +27,43 @@ void KDataBase::printDay(int index)
         Days.at(index)->print();
 }
 
+bool KDataBase::isDayExist(QDate &dt) const
+{
+    const int index = DateToIndex(dt);
+    return isDayExist(index);
+}
+
 bool KDataBase::isDayExist(int index) const
 {
     if (index < 0 || index > maxDaysInBase) return false;
     return Days.at(index);
 }
 
-const QString KDataBase::createDay(int index)
+bool KDataBase::createDay(int index)
 {
-    if (index < 0 || index > maxDaysInBase) return "Bad index";
-    if ( Days.at(index) ) return "Already exists";
+    if (index < 0 || index > maxDaysInBase) return false;
+    if (isDayExist(index)) return false;
 
     int day, month, year;
     IndexToDate(index, day, month, year);
     Days[index] = new KDay(index, day, month, year);
+    return true;
+}
 
-    //temp!
-    /*
-    KTask home;
-    home.Name = "Homework 1";
-    Days[index]->addToList(home, Days[index]->getListHomework());
-    home.Priority = 4;
-    home.Acomplished = false;
-    home.Name = "Homework 2";
-    Days[index]->addToList(home, Days[index]->getListHomework());
-    home.Acomplished = false;
-    home.Name = "Homework 3";
-    Days[index]->addToList(home, Days[index]->getListHomework());
-    home.Acomplished = true;
-    home.Priority = 5;
+const QString KDataBase::createDummyDay(QDate &dt)
+{
+    const int index = DateToIndex(dt);
+    if (index < 0 || index > maxDaysInBase) return "Bad index";
 
-    KTask stud;
-    stud.Name = "Study One";
-    Days[index]->addToList(home, Days[index]->getListStudy());
-    stud.Priority = 1;
-    stud.Acomplished = true;
-    stud.Name = "Study Two";
-    Days[index]->addToList(home, Days[index]->getListStudy());
-    stud.Acomplished = true;
-    stud.Name = "Study Three";
-    Days[index]->addToList(home, Days[index]->getListStudy());
-    stud.Priority = -1;
-    stud.Acomplished = false;
-    */
+    if ( Days.at(index) )
+    {
+        delete Days.at(index);
+        Days[index] = 0;
+    }
+
+    int day, month, year;
+    IndexToDate(index, day, month, year);
+    Days[index] = new KDay(index, day, month, year);
 
     KTask nt;
     nt.Name = "Generic task # 1";    
@@ -133,39 +128,11 @@ const QString KDataBase::createDay(int index)
     return "";
 }
 
-const KDay *KDataBase::getDay(int index) const
-{
-    if (isDayExist(index))
-        return Days.at(index);
-    else
-        return 0;
-}
-
-KDay *KDataBase::getDay(int index)
-{
-    if (isDayExist(index))
-        return Days[index];
-    else
-        return 0;
-}
-
-const KDay *KDataBase::getDay(QDate&d) const
-{
-    int index = DateToIndex(d.day(), d.month(),d.year());
-    if (isDayExist(index))
-        return Days[index];
-    else
-        return 0;
-}
-
 KDay *KDataBase::getDay(QDate &d)
 {
-    int index = DateToIndex(d.day(), d.month(),d.year());
-    if (isDayExist(index))
-        return Days[index];
-    else
-        return 0;
-    //getDay(index)
+    const int index = DateToIndex(d.day(), d.month(),d.year());
+    if ( !isDayExist(index)) createDay(index);
+    return Days[index];
 }
 
 void KDataBase::writeToJson(QJsonObject& json) const
@@ -173,7 +140,7 @@ void KDataBase::writeToJson(QJsonObject& json) const
     //Days
     QJsonArray ar;
     for (const KDay* day : Days)
-        if (day)
+        if ( !day->isDayEmpty() )
         {
             QJsonObject js;
             day->writeToJson(js);
@@ -205,7 +172,7 @@ void KDataBase::readFromJson(const QJsonObject &json)
 
 }
 
-int KDataBase::DateToIndex(int day, int month, int year)
+int KDataBase::DateToIndex(int day, int month, int year) const
 {
     QDate thisOne(year, month, day);
     QDate startOfKira(2018, 1, 1);
@@ -216,7 +183,12 @@ int KDataBase::DateToIndex(int day, int month, int year)
     return days;
 }
 
-bool KDataBase::IndexToDate(int index, int &day, int &month, int &year)
+int KDataBase::DateToIndex(const QDate &qdate) const
+{
+    return DateToIndex(qdate.day(), qdate.month(), qdate.year());
+}
+
+bool KDataBase::IndexToDate(int index, int &day, int &month, int &year) const
 {
     if (index < 0) return false;
 

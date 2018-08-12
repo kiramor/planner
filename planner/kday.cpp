@@ -47,6 +47,19 @@ void KDay::readFromJson(const QJsonObject &json)
     }
 }
 
+bool KDay::isDayEmpty() const
+{
+    if (!ToDo.isEmpty()) return false;
+    if (!Homework.isEmpty()) return false;
+    if (!Study.isEmpty()) return false;
+
+    if (!LinkToSpecialTasks.isEmpty()) return false;
+    if (!LinkToGradedSTs.isEmpty()) return false;
+    if (!LinkToHabits.isEmpty()) return false;
+
+    return true;
+}
+
 int KDay::getDayOfWeek()
 {
     return 0;

@@ -10,17 +10,11 @@ class KDataBase
 public:
     KDataBase();
 
-    void printDay(int index);
+    void printDay(QDate &dt); //temporary
+    bool isDayExist(QDate &dt) const;
+    const QString createDummyDay(QDate &dt); //return "" if seccess
 
-    bool          isDayExist(int index) const;
-    //bool          isDayExist(QDate &dt) const;
-    const QString createDay(int index); //return "" if seccess
-
-    const KDay*   getDay(int index) const;
-    KDay*         getDay(int index);
-
-    const KDay*   getDay(QDate &d) const;
-    KDay*         getDay(QDate &d);
+    KDay* getDay(QDate &d);
 
     void writeToJson(QJsonObject &json) const;
     void readFromJson(const QJsonObject &json);
@@ -29,10 +23,14 @@ private:
     const int maxDaysInBase = 36500;
     QVector<KDay*> Days;
 
+    bool isDayExist(int index) const;
+    bool createDay(int index);
     void clearBase();
-public:
-    static int  DateToIndex(int day, int month, int year);
-    static bool IndexToDate(int index, int& day, int& month, int& year);
+
+    int  DateToIndex(int day, int month, int year) const;
+    int  DateToIndex(const QDate& qdate) const;
+    bool IndexToDate(int index, int& day, int& month, int& year) const;
+
 };
 
 #endif // KDATABASE_H

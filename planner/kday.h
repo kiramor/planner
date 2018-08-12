@@ -22,6 +22,8 @@ public:
     int getYear() const {return Year;}
     const QDate& getQDate() const {return qDate;}
 
+    bool isDayEmpty() const;
+
 private:
     int  Index = -1;
 
@@ -34,8 +36,6 @@ private:
     QVector<KTask> Homework;
     QVector<KTask> Study;
 
-    //QVector<int>   LinkToEvents;
-    //QVector<int>   LinkToProjects;
     QVector<int>   LinkToSpecialTasks;
     QVector<int>   LinkToGradedSTs;
     QVector<int>   LinkToHabits;

@@ -10,13 +10,14 @@
 
 
 MainWindow::MainWindow(KDataBase &dataBase, QWidget *parent) :
-    QMainWindow(parent), DataBase(dataBase),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent), DataBase(dataBase), ui(new Ui::MainWindow), OpenDate(QDate::currentDate())
 {
     ui->setupUi(this);
 
     ui->lwToDo->setDragDropMode(QAbstractItemView::DragDrop);
     ui->lwToDo->setDefaultDropAction(Qt::MoveAction);
+
+    updateGuiForOpenDay();
 }
 
 MainWindow::~MainWindow()
@@ -48,23 +49,9 @@ bool MainWindow::loadBase()
 }
 
 void MainWindow::on_pbTest1_clicked()
-{   //temp!!
-    int tempd =KDataBase::DateToIndex(QDate::currentDate().day(), QDate::currentDate().month(), QDate::currentDate().year());
-    DataBase.createDay(tempd);
-    //temp!!
-}
-
-void MainWindow::on_sbDayIndex_valueChanged(int arg1)
 {
-    //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListToDo(), ui->lwToDo);
-    //updateGuiForDay(arg1);
-    //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListHomework(), ui->lwHome);
-    //updateGuiForDay(arg1, DataBase.getDay(arg1)->getListStudy(), ui->lwStudy);
-    //int day, month, year;
-    //QDate d;
-    //KDataBase::IndexToDate(arg1, day, month, year);
-
-
+    DataBase.createDummyDay(OpenDate);
+    updateGuiForOpenDay();
 }
 
 void MainWindow::clearGui()
@@ -80,26 +67,22 @@ void MainWindow::clearGui()
 }
 
 //void MainWindow::updateGuiForDay(int dayIndex, QVector<KTask> &container, QListWidget *lw)
-void MainWindow::updateGuiForDay(int dayIndex)
+void MainWindow::updateGuiForOpenDay()
 {
     clearGui();
-    qDebug() <<"updating day with index:" <<dayIndex;
 
-    if (DataBase.isDayExist(dayIndex))
-    {
-        KDay* thisDay = DataBase.getDay(dayIndex);
+    KDay* thisDay = DataBase.getDay(OpenDate);
 
-        QString str = thisDay->getQDate().toString("  dddd, dd of MMMM, yyyy");
-        ui->labDayInfo->setText(str);
+    QString str = thisDay->getQDate().toString("  dddd, dd of MMMM, yyyy");
+    ui->labDayInfo->setText(str);
 
-        //tasks
-        //QVector<KTask>& container = thisDay->getListToDo();
+    //tasks
+    //QVector<KTask>& container = thisDay->getListToDo();
 
-        updateTaskWidget(thisDay->getListToDo(), ui->lwToDo);
-        //updateTaskWidget(container, lw);
-        updateTaskWidget(thisDay->getListHomework(), ui->lwHome);
-        updateTaskWidget(thisDay->getListStudy(), ui->lwStudy);
-    }
+    updateTaskWidget(thisDay->getListToDo(), ui->lwToDo);
+    //updateTaskWidget(container, lw);
+    updateTaskWidget(thisDay->getListHomework(), ui->lwHome);
+    updateTaskWidget(thisDay->getListStudy(), ui->lwStudy);
 }
 
 void MainWindow::updateTaskWidget(QVector<KTask> &container, QListWidget *lw)
@@ -139,7 +122,7 @@ void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
         toggleDone = m.addAction("Change done state");
       }
     m.addSeparator();
-    QAction* blabla = m.addAction("Do blabla");
+    //QAction* blabla = m.addAction("Do blabla");
     m.addSeparator();
 
     QAction* selectedItem = m.exec(ui->lwToDo->mapToGlobal(pos));
@@ -148,16 +131,16 @@ void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
     if (selectedItem == toggleDone)
     {
         int currentTask = row;
-        int index = KDataBase::DateToIndex(openDate.day(), openDate.month(), openDate.year());
-        //qDebug() <<index <<"<-index";
-        if (DataBase.isDayExist(index))
+        if (DataBase.isDayExist(OpenDate))
         {
-            KDay* thisDay = DataBase.getDay(openDate);
+            KDay* thisDay = DataBase.getDay(OpenDate);
             if (currentTask < thisDay->getListToDo().size())
                 //qDebug() <<"huh wanna toggle?";
                 thisDay->getListToDo()[currentTask].toggleAcomplishedStatus();
-            updateGuiForDay(index);
+            updateGuiForOpenDay();
         }
+        else
+            qDebug() << "!!!!!----------  OpenDay does not exist";
     }
 }
 
@@ -179,7 +162,7 @@ void MainWindow::on_pbCalendar_clicked()
     QVBoxLayout* l = new QVBoxLayout(m);
         QCalendarWidget* cw = new QCalendarWidget(m);
     l->addWidget(cw);
-    cw->setSelectedDate(openDate);
+    cw->setSelectedDate(OpenDate);
 
 
     QHBoxLayout* lh = new QHBoxLayout();
@@ -208,10 +191,9 @@ void MainWindow::on_pbCalendar_clicked()
     if (m->result()==QDialog::Accepted)
     {
         QDate d = cw->selectedDate();
-        qDebug() << "Papa selected"<< d.toString();
-        int indx = KDataBase::DateToIndex(d.day(), d.month(), d.year());
-        updateGuiForDay(indx);
-        MainWindow::openDate = d;
+        qDebug() << "User selected day:"<< d.toString();
+        OpenDate = d;
+        updateGuiForOpenDay();
     }
 
     delete m;
@@ -219,14 +201,13 @@ void MainWindow::on_pbCalendar_clicked()
 
 void MainWindow::on_pbToday_clicked()
 {
-   MainWindow::openDate = QDate::currentDate();
-   int d =KDataBase::DateToIndex(openDate.day(), openDate.month(), openDate.year());
-   updateGuiForDay(d);
+   OpenDate = QDate::currentDate();
+   updateGuiForOpenDay();
 }
 
 void MainWindow::on_pbToDo_clicked()
 {
-    KDay* thisDay = DataBase.getDay(openDate);
+    KDay* thisDay = DataBase.getDay(OpenDate);
     if (!thisDay)
     {
         qDebug() << "aaaaaaaaaaa   den = 0";
