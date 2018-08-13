@@ -112,12 +112,9 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QLabel" name="label_3">
+            <widget class="QPushButton" name="pbStudy">
              <property name="text">
               <string>Study:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -129,12 +126,9 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <widget class="QLabel" name="label_4">
+            <widget class="QPushButton" name="pbHomework">
              <property name="text">
-              <string>Homeworks:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>Homework:</string>
              </property>
             </widget>
            </item>

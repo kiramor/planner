@@ -208,17 +208,26 @@ void MainWindow::on_pbToday_clicked()
 void MainWindow::on_pbToDo_clicked()
 {
     KDay* thisDay = DataBase.getDay(OpenDate);
-    if (!thisDay)
-    {
-        qDebug() << "aaaaaaaaaaa   den = 0";
-
-    }
-    qDebug() << "pointer:"<<thisDay;
-    thisDay->print();
-
-    //KTaskWindow tw(thisDay->getListToDo());
-    KTaskWindow* tw = new KTaskWindow(thisDay->getListToDo());
+    KTaskWindow* tw = new KTaskWindow(thisDay->getListToDo(), this);
+    tw->setWindowModality(Qt::WindowModal);
     tw->show();
 
 
+}
+
+void MainWindow::on_pbStudy_clicked()
+{
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    KTaskWindow* tw = new KTaskWindow(thisDay->getListStudy(), this);
+    tw->setWindowModality(Qt::WindowModal);
+    tw->show();
+
+}
+
+void MainWindow::on_pbHomework_clicked()
+{
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    KTaskWindow* tw = new KTaskWindow(thisDay->getListHomework(), this);
+    tw->setWindowModality(Qt::WindowModal);
+    tw->show();
 }

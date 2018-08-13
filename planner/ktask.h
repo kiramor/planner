@@ -9,6 +9,7 @@ class KTask
 {
 public:
     KTask() {}
+    KTask(QString Name, bool Acomplished, int Priority);
 
     QString Name = "NoName";
     bool    Acomplished = false;

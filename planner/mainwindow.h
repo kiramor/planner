@@ -31,6 +31,10 @@ private slots:
     void on_pbToday_clicked();
     void on_pbToDo_clicked();
 
+    void on_pbStudy_clicked();
+
+    void on_pbHomework_clicked();
+
 private:
     KDataBase & DataBase;
     Ui::MainWindow *ui;

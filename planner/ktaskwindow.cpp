@@ -20,7 +20,7 @@ KTaskWindow::~KTaskWindow()
 
 void KTaskWindow::fillTable(QVector<KTask> &container)
 {
-    ui->twTable->clear();
+    ui->twTable->clearContents();
     if (container.isEmpty()) return;
 
         //ui->twTable->insertRow(0);
@@ -58,4 +58,13 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
 
             row++;
         }
+}
+
+void KTaskWindow::on_pbAccept_clicked()
+{ qDebug() <<"Ja tugvfdfsgthyjndbvgshynj" <<ui->twTable->rowCount();
+    for (int i=0; i<ui->twTable->rowCount(); i++)
+    {
+        qDebug() <<ui->twTable->item(i, 0)->text()<< ui->twTable->item(i,1)->text()<< ui->twTable->item(i,2)->text();
+    }
+
 }

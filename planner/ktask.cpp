@@ -1,6 +1,12 @@
 #include "ktask.h"
 #include "kjsontools.h"
 
+KTask::KTask(QString Name, bool Acomplished, int Priority):
+    Name(Name), Acomplished(Acomplished), Priority(Priority)
+{
+
+}
+
 void KTask::toggleAcomplishedStatus()
 {
     Acomplished = !Acomplished;

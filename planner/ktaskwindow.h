@@ -19,6 +19,9 @@ public:
 
     void fillTable(QVector<KTask> &container);
 
+private slots:
+    void on_pbAccept_clicked();
+
 private:
     Ui::KTaskWindow *ui;
     QVector<KTask> & Tasks;
