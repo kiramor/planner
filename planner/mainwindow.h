@@ -41,9 +41,11 @@ private:
 
     QDate OpenDate;
 
-private:
-    void clearGui();
+private slots:
     void updateGuiForOpenDay();
+
+private:
+    void clearGui();    
     void updateTaskWidget(QVector<KTask> &container, QListWidget *lw);
 
 };

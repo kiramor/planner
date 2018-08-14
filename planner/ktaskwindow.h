@@ -22,9 +22,18 @@ public:
 private slots:
     void on_pbAccept_clicked();
 
+    void on_twTable_cellDoubleClicked(int row, int column);
+
+    void on_pbCancel_clicked();
+
 private:
     Ui::KTaskWindow *ui;
     QVector<KTask> & Tasks;
+    QString sDone = "Done";
+    QString sNotDone ="Not done";
+
+signals:
+    void TaskWindowClosed();
 };
 
 #endif // KTASKWINDOW_H

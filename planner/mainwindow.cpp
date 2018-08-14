@@ -69,6 +69,8 @@ void MainWindow::clearGui()
 //void MainWindow::updateGuiForDay(int dayIndex, QVector<KTask> &container, QListWidget *lw)
 void MainWindow::updateGuiForOpenDay()
 {
+    qDebug() << "updateGuiForOpenDay";
+
     clearGui();
 
     KDay* thisDay = DataBase.getDay(OpenDate);
@@ -229,5 +231,7 @@ void MainWindow::on_pbHomework_clicked()
     KDay* thisDay = DataBase.getDay(OpenDate);
     KTaskWindow* tw = new KTaskWindow(thisDay->getListHomework(), this);
     tw->setWindowModality(Qt::WindowModal);
+    QObject::connect(tw, &KTaskWindow::TaskWindowClosed, this, &MainWindow::updateGuiForOpenDay);
     tw->show();
 }
+
