@@ -212,6 +212,7 @@ void MainWindow::on_pbToDo_clicked()
     KDay* thisDay = DataBase.getDay(OpenDate);
     KTaskWindow* tw = new KTaskWindow(thisDay->getListToDo(), this);
     tw->setWindowModality(Qt::WindowModal);
+    QObject::connect(tw, &KTaskWindow::TaskWindowClosed, this, &MainWindow::updateGuiForOpenDay);
     tw->show();
 
 
@@ -222,6 +223,7 @@ void MainWindow::on_pbStudy_clicked()
     KDay* thisDay = DataBase.getDay(OpenDate);
     KTaskWindow* tw = new KTaskWindow(thisDay->getListStudy(), this);
     tw->setWindowModality(Qt::WindowModal);
+    QObject::connect(tw, &KTaskWindow::TaskWindowClosed, this, &MainWindow::updateGuiForOpenDay);
     tw->show();
 
 }

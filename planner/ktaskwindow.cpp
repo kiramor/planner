@@ -42,18 +42,19 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
             //qDebug() <<"size of container:"<<container.size() <<row;
             QTableWidgetItem* item = new QTableWidgetItem(tsk.Name);
             ui->twTable->setItem(row, 0, item);
-            //item->setFlags(item->flags() ^ Qt::ItemIsEditable);
 
             if (tsk.Acomplished == true)
             {
                 //qDebug() <<"size of container:"<<container.size() <<row;
                 item = new QTableWidgetItem(sDone);
                 item->setBackgroundColor(Qt::darkGreen);
+                item->setFlags(item->flags() ^ Qt::ItemIsEditable);
                 ui->twTable->setItem(row, 1, item);
             }
             else
             {
                 item = new QTableWidgetItem(sNotDone);
+                item->setFlags(item->flags() ^ Qt::ItemIsEditable);
                 ui->twTable->setItem(row, 1, item);
             }
 
@@ -87,7 +88,7 @@ void KTaskWindow::on_pbAccept_clicked()
     }
 
     emit TaskWindowClosed();
-    //deleteLater();
+    deleteLater();
 }
 
 void KTaskWindow::on_twTable_cellDoubleClicked(int row, int column)
@@ -103,7 +104,7 @@ void KTaskWindow::on_twTable_cellDoubleClicked(int row, int column)
         {
             ui->twTable->item(row, column)->setText(sDone);
         }
-    //fillTable(Tasks);
+
     }
 }
 
