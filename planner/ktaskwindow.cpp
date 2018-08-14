@@ -4,6 +4,8 @@
 
 #include <QWidget>
 #include <QDebug>
+#include <QIntValidator>
+
 KTaskWindow::KTaskWindow(QVector<KTask> &container, QWidget *parent) :
     Tasks(container),
     QMainWindow(parent),
@@ -11,7 +13,9 @@ KTaskWindow::KTaskWindow(QVector<KTask> &container, QWidget *parent) :
 
 {
     ui->setupUi(this);
+    intValidator = new QIntValidator(this);
     fillTable(Tasks);
+    qDebug() <<"validator in constructor!!!!!!:"<<intValidator;
 }
 
 KTaskWindow::~KTaskWindow()
@@ -58,10 +62,14 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
                 ui->twTable->setItem(row, 1, item);
             }
 
-            qDebug() <<"size of container:"<<container.size() <<row <<tsk.Priority;
-            item = new QTableWidgetItem(QString::number(tsk.Priority));
-            ui->twTable->setItem(row, 2, item);
-            //item->setFlags(item->flags() ^ Qt::ItemIsEditable);
+
+            QLineEdit *qle = new QLineEdit (QString::number(tsk.Priority));
+            qDebug() <<"validator:"<<intValidator;
+            qle->setValidator(intValidator);
+            ui->twTable->setCellWidget(row, 2, qle);
+            //ui->twTable->setItem(row, 2, item);
+            //QLineEdit *qle = new QLineEdit (ui->twTable->item(row, 2)->text(), ui->twTable->item(row,2));
+
 
             row++;
         }
@@ -78,12 +86,25 @@ void KTaskWindow::on_pbAccept_clicked()
         qDebug() <<i;
         const QString name(ui->twTable->item(i, 0)->text());
         qDebug() <<"tasks1" <<name;
+
         const bool done(ui->twTable->item(i, 1)->text() == "Done");
-        const int priority(ui->twTable->item(i, 2)->text().toInt());
+
+        QWidget* w = ui->twTable->cellWidget(i, 2);
+        QLineEdit* le = dynamic_cast<QLineEdit*>(w);
+        int priority = 0;
+        if (le)
+        {
+            priority = le->text().toInt();
+        }
+        else
+        {
+            qDebug() << "line edit is null";
+        }
+        //const int priority(ui->twTable->item.(i, 2)->text().toInt());
         qDebug() <<"tasks3" <<priority;
         qDebug() <<"tasks4" <<done <<name <<priority;
+
         Tasks << KTask(name, done, priority);
-        //qDebug() <<Tasks[i].Name;
 
     }
 

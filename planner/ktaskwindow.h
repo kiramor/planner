@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QVector>
 #include "ktask.h"
+#include <QLineEdit>
+
+class QIntValidator;
 
 namespace Ui {
 class KTaskWindow;
@@ -31,6 +34,7 @@ private:
     QVector<KTask> & Tasks;
     QString sDone = "Done";
     QString sNotDone ="Not done";
+    QIntValidator *intValidator = 0;
 
 signals:
     void TaskWindowClosed();
