@@ -178,7 +178,6 @@ int KDataBase::DateToIndex(int day, int month, int year) const
     QDate startOfKira(2018, 1, 1);
 
     int days = startOfKira.daysTo(thisOne);
-    qDebug() << days;
 
     return days;
 }

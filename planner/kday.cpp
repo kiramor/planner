@@ -7,7 +7,6 @@ KDay::KDay(int index, int day, int month, int year) :
     Index(index), Day(day), Month(month), Year(year)
 {
     updateQDate();
-    qDebug() << "Creating day with index" << index;
 }
 
 void KDay::writeToJson(QJsonObject &json) const

@@ -15,7 +15,6 @@ KTaskWindow::KTaskWindow(QVector<KTask> &container, QWidget *parent) :
     ui->setupUi(this);
     intValidator = new QIntValidator(this);
     fillTable(Tasks);
-    qDebug() <<"validator in constructor!!!!!!:"<<intValidator;
 }
 
 KTaskWindow::~KTaskWindow()
@@ -23,6 +22,7 @@ KTaskWindow::~KTaskWindow()
     delete ui;
 }
 
+#include <QHeaderView>
 void KTaskWindow::fillTable(QVector<KTask> &container)
 {
     ui->twTable->clearContents();
@@ -40,31 +40,42 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
         for (int i=0; i<container.size(); i++)
             ui->twTable->insertRow(i);
 
+        ui->twTable->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        //ui->twTable->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+        //ui->twTable->horizontalHeaderItem(1)->setSizeHint(QSize(100,100));
+        //ui->twTable->horizontalHeader()->setRe ->setResizeMode(QHeaderView::Stretch);
+
+        //ui->twTable->horizontalHeader()->res(QHeaderView::ResizeToContents);
+        ui->twTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+        ui->twTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+        ui->twTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+
+        //headerView->SetResizeMode(1,QHeaderview::Interactive);
+
         int row = 0;
         for (const KTask& tsk : container)
         {
             //qDebug() <<"size of container:"<<container.size() <<row;
             QTableWidgetItem* item = new QTableWidgetItem(tsk.Name);
+            //item->setTextAlignment(Qt::AlignCenter);
             ui->twTable->setItem(row, 0, item);
 
+            item = new QTableWidgetItem();
             if (tsk.Acomplished == true)
             {
-                //qDebug() <<"size of container:"<<container.size() <<row;
-                item = new QTableWidgetItem(sDone);
+                item->setText(sDone);
                 item->setBackgroundColor(Qt::darkGreen);
-                item->setFlags(item->flags() ^ Qt::ItemIsEditable);
-                ui->twTable->setItem(row, 1, item);
             }
             else
-            {
-                item = new QTableWidgetItem(sNotDone);
-                item->setFlags(item->flags() ^ Qt::ItemIsEditable);
-                ui->twTable->setItem(row, 1, item);
-            }
-
+                item->setText(sNotDone);
+            item->setFlags(item->flags() ^ Qt::ItemIsEditable);
+            item->setTextAlignment(Qt::AlignCenter);
+            ui->twTable->setItem(row, 1, item);
 
             QLineEdit *qle = new QLineEdit (QString::number(tsk.Priority));
-            qDebug() <<"validator:"<<intValidator;
+            qle->setMaximumWidth(50);
+            qle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+            qle->setAlignment(Qt::AlignCenter);
             qle->setValidator(intValidator);
             ui->twTable->setCellWidget(row, 2, qle);
             //ui->twTable->setItem(row, 2, item);
@@ -77,16 +88,11 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
 
 void KTaskWindow::on_pbAccept_clicked()
 {
-    qDebug() <<"Ja tugvfdfsgthyjndbvgshynj" <<ui->twTable->rowCount();
     Tasks.clear();
-    qDebug() <<Tasks.size();
 
     for (int i=0; i<ui->twTable->rowCount(); i++)
     {
-        qDebug() <<i;
         const QString name(ui->twTable->item(i, 0)->text());
-        qDebug() <<"tasks1" <<name;
-
         const bool done(ui->twTable->item(i, 1)->text() == "Done");
 
         QWidget* w = ui->twTable->cellWidget(i, 2);
@@ -101,8 +107,7 @@ void KTaskWindow::on_pbAccept_clicked()
             qDebug() << "line edit is null";
         }
         //const int priority(ui->twTable->item.(i, 2)->text().toInt());
-        qDebug() <<"tasks3" <<priority;
-        qDebug() <<"tasks4" <<done <<name <<priority;
+        qDebug() <<"d, n, p:" <<done <<name <<priority;
 
         Tasks << KTask(name, done, priority);
 

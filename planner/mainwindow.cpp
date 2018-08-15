@@ -69,8 +69,6 @@ void MainWindow::clearGui()
 //void MainWindow::updateGuiForDay(int dayIndex, QVector<KTask> &container, QListWidget *lw)
 void MainWindow::updateGuiForOpenDay()
 {
-    qDebug() << "updateGuiForOpenDay";
-
     clearGui();
 
     KDay* thisDay = DataBase.getDay(OpenDate);
