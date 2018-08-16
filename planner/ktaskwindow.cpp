@@ -88,20 +88,39 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
             //QLineEdit *qle = new QLineEdit (ui->twTable->item(row, 2)->text(), ui->twTable->item(row,2));
 
 
+            /*QTableWidgetItem* itm = new QTableWidgetItem("n/a");
+            itm->setData(2, tsk.AdditionalInfo);
+            itm->setText("n/a");
+            //item->data(2) = "jhgfds";
+            ui->twTable->setItem(row, 1, itm);*/
+
+
+            /*QTableWidgetItem* itm2 = new QTableWidgetItem("n/a");
+            itm2->setData(2, tsk.AdditionalInfo);
+            itm2->setText("n/a");
+            ui->twTable->setItem(1, 1, itm2);
+            QTableWidgetItem* itm3 = new QTableWidgetItem("n/a");
+            itm3->setData(2, tsk.AdditionalInfo);
+            ui->twTable->setItem(2, 1, itm3);
+            int max = 50;
+            //item->
+            ui->twTable->setRowHeight(1, max);*/
+            ui->twTable->hideColumn(1);
+
+
+
+
+
+
+
+
+
             row++;
 
 
 
 
-            QTableWidgetItem* itm = new QTableWidgetItem("n/a");
-            ui->twTable->setItem(0, 1, itm);
-            QTableWidgetItem* itm2 = new QTableWidgetItem("n/a");
-            ui->twTable->setItem(1, 1, itm2);
-            QTableWidgetItem* itm3 = new QTableWidgetItem("n/a");
-            ui->twTable->setItem(2, 1, itm3);
-            /*int max = 50;
-            //item->
-            ui->twTable->setRowHeight(1, max);*/
+
         }
 }
 
@@ -184,22 +203,25 @@ void KTaskWindow::on_twTable_customContextMenuRequested(const QPoint &pos)
 
 void KTaskWindow::on_twTable_itemSelectionChanged()
 {
-    for (int i=0; i<ui->twTable->rowCount(); i++)
+
+    ui->twTable->showColumn(1);
+    /*for (int i=0; i<ui->twTable->rowCount(); i++)
     {
         ui->twTable->item(i, 1)->setText("n/a");
-    }
+    }*/
 
 
     for (int i = 0; i<ui->twTable->selectedItems().size(); i++)
     {
         //QList <QTableWidgetItem*> list = ui->twTable->selectedItems();
         //QList <QTableWidgetItem*> list = new QList <QTableWidgetItem*>(ui->twTable->selectedItems());
-        int r=ui->twTable->selectedItems()[i]->row();
-        qDebug() <<"selected Item" <<ui->twTable->item(r, 1)->text();
-        ui->twTable->item(r, 1)->setText(Tasks[r].AdditionalInfo);
-        qDebug() <<"selected Item" <<ui->twTable->item(r, 1)->text();
+        //int r=ui->twTable->selectedItems()[i]->row();
+        //qDebug() <<"selected Item" <<ui->twTable->item(1,1)->data(2);
+        //ui->twTable->item(r, 1)->setText(Tasks[r].AdditionalInfo);
+        //qDebug() <<"selected Item" <<ui->twTable->item(r, 1)->text();
         //ui->twTable->hideRow()
 
-        ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+        //ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+        //ui->twTable->item(1,1)->setText(ui->twTable->item(1,1)->data(2).toString());
     }
 }
