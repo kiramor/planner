@@ -10,6 +10,7 @@ class KTask
 public:
     KTask() {}
     KTask(QString Name, bool Acomplished, int Priority);
+    KTask(QString Name,QString AdditionalInfo, bool Acomplished, int Priority);
 
     QString Name = "NoName";
     QString AdditionalInfo = "No info";

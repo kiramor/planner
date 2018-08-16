@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QIntValidator>
+//#include <QList>
 
 KTaskWindow::KTaskWindow(QVector<KTask> &container, QWidget *parent) :
     Tasks(container),
@@ -41,16 +42,21 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
             ui->twTable->insertRow(i);
 
         ui->twTable->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-        //ui->twTable->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
-        //ui->twTable->horizontalHeaderItem(1)->setSizeHint(QSize(100,100));
-        //ui->twTable->horizontalHeader()->setRe ->setResizeMode(QHeaderView::Stretch);
-
-        //ui->twTable->horizontalHeader()->res(QHeaderView::ResizeToContents);
+        //name header
         ui->twTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-        ui->twTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-        ui->twTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+        //add.. info header
 
-        //headerView->SetResizeMode(1,QHeaderview::Interactive);
+        //ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+
+
+
+
+
+        //done header
+        ui->twTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+        //priority header
+        ui->twTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+
 
         int row = 0;
         for (const KTask& tsk : container)
@@ -70,19 +76,32 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
                 item->setText(sNotDone);
             item->setFlags(item->flags() ^ Qt::ItemIsEditable);
             item->setTextAlignment(Qt::AlignCenter);
-            ui->twTable->setItem(row, 1, item);
+            ui->twTable->setItem(row, 2, item);
 
             QLineEdit *qle = new QLineEdit (QString::number(tsk.Priority));
             qle->setMaximumWidth(50);
             qle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
             qle->setAlignment(Qt::AlignCenter);
             qle->setValidator(intValidator);
-            ui->twTable->setCellWidget(row, 2, qle);
+            ui->twTable->setCellWidget(row, 3, qle);
             //ui->twTable->setItem(row, 2, item);
             //QLineEdit *qle = new QLineEdit (ui->twTable->item(row, 2)->text(), ui->twTable->item(row,2));
 
 
             row++;
+
+
+
+
+            QTableWidgetItem* itm = new QTableWidgetItem("n/a");
+            ui->twTable->setItem(0, 1, itm);
+            QTableWidgetItem* itm2 = new QTableWidgetItem("n/a");
+            ui->twTable->setItem(1, 1, itm2);
+            QTableWidgetItem* itm3 = new QTableWidgetItem("n/a");
+            ui->twTable->setItem(2, 1, itm3);
+            /*int max = 50;
+            //item->
+            ui->twTable->setRowHeight(1, max);*/
         }
 }
 
@@ -93,9 +112,10 @@ void KTaskWindow::on_pbAccept_clicked()
     for (int i=0; i<ui->twTable->rowCount(); i++)
     {
         const QString name(ui->twTable->item(i, 0)->text());
-        const bool done(ui->twTable->item(i, 1)->text() == "Done");
+        const bool done(ui->twTable->item(i, 2)->text() == "Done");
 
-        QWidget* w = ui->twTable->cellWidget(i, 2);
+
+        QWidget* w = ui->twTable->cellWidget(i, 3);
         QLineEdit* le = dynamic_cast<QLineEdit*>(w);
         int priority = 0;
         if (le)
@@ -164,5 +184,22 @@ void KTaskWindow::on_twTable_customContextMenuRequested(const QPoint &pos)
 
 void KTaskWindow::on_twTable_itemSelectionChanged()
 {
-    //ui->twTable
+    for (int i=0; i<ui->twTable->rowCount(); i++)
+    {
+        ui->twTable->item(i, 1)->setText("n/a");
+    }
+
+
+    for (int i = 0; i<ui->twTable->selectedItems().size(); i++)
+    {
+        //QList <QTableWidgetItem*> list = ui->twTable->selectedItems();
+        //QList <QTableWidgetItem*> list = new QList <QTableWidgetItem*>(ui->twTable->selectedItems());
+        int r=ui->twTable->selectedItems()[i]->row();
+        qDebug() <<"selected Item" <<ui->twTable->item(r, 1)->text();
+        ui->twTable->item(r, 1)->setText(Tasks[r].AdditionalInfo);
+        qDebug() <<"selected Item" <<ui->twTable->item(r, 1)->text();
+        //ui->twTable->hideRow()
+
+        ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    }
 }

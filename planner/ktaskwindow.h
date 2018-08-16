@@ -6,6 +6,7 @@
 #include "ktask.h"
 #include <QLineEdit>
 #include <QDialog>
+#include <QList>
 
 
 class QIntValidator;

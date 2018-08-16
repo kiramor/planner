@@ -25,14 +25,17 @@
         <property name="contextMenuPolicy">
          <enum>Qt::CustomContextMenu</enum>
         </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+        </property>
         <property name="columnCount">
-         <number>3</number>
+         <number>4</number>
         </property>
         <attribute name="horizontalHeaderCascadingSectionResizes">
          <bool>false</bool>
         </attribute>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>198</number>
+         <number>148</number>
         </attribute>
         <attribute name="verticalHeaderStretchLastSection">
          <bool>false</bool>
@@ -40,6 +43,11 @@
         <column>
          <property name="text">
           <string>Name</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Additional Info</string>
          </property>
         </column>
         <column>
