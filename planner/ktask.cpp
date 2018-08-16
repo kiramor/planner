@@ -18,6 +18,7 @@ void KTask::writeToJson(QJsonObject &json) const
     json["Name"] = Name;
     json["Acomplished"] = Acomplished;
     json["Priority"] = Priority;
+    json["AdditionalInfo"] = AdditionalInfo;
 }
 
 const QJsonObject KTask::writeToJson() const
@@ -32,5 +33,6 @@ void KTask::readFromJson(const QJsonObject &json)
     parseJson(json, "Name", Name);
     parseJson(json, "Acomplished", Acomplished);
     parseJson(json, "Priority", Priority);
+    parseJson(json, "AdditionalInfo", AdditionalInfo);
 }
 

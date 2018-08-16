@@ -139,3 +139,30 @@ void KTaskWindow::on_pbCancel_clicked()
     emit TaskWindowClosed();
     deleteLater();
 }
+
+void KTaskWindow::on_twTable_customContextMenuRequested(const QPoint &pos)
+{
+
+    /*QDialog* m = new QDialog(this);
+    //m->setWindowTitle("Select date");
+    QLineEdit* labAddInfo = new QLineEdit(m);
+    //labAddInfo->setEnabled(fals);
+    //QObject::connect(labAddInfo, &QLineEdit::returnPressed, labAddInfo, &QLineEdit::setDisabled);
+
+
+
+    //int r = row
+    int r(ui->twTable->itemAt(pos)->row());
+    QString str(Tasks[r].AdditionalInfo);
+    labAddInfo->setText(str);
+
+
+
+    m->exec();
+    Tasks[r].AdditionalInfo = labAddInfo->text();*/
+}
+
+void KTaskWindow::on_twTable_itemSelectionChanged()
+{
+    //ui->twTable
+}

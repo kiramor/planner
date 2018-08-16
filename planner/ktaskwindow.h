@@ -5,6 +5,8 @@
 #include <QVector>
 #include "ktask.h"
 #include <QLineEdit>
+#include <QDialog>
+
 
 class QIntValidator;
 
@@ -28,6 +30,10 @@ private slots:
     void on_twTable_cellDoubleClicked(int row, int column);
 
     void on_pbCancel_clicked();
+
+    void on_twTable_customContextMenuRequested(const QPoint &pos);
+
+    void on_twTable_itemSelectionChanged();
 
 private:
     Ui::KTaskWindow *ui;
