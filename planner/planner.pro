@@ -31,7 +31,8 @@ SOURCES += \
     kspecialtask.cpp \
     kjsontools.cpp \
     kgradedst.cpp \
-    ktaskwindow.cpp
+    ktaskwindow.cpp \
+    ksingletaskview.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -41,11 +42,13 @@ HEADERS += \
     kjsontools.h \
     kspecialtask.h \
     kgradedst.h \
-    ktaskwindow.h
+    ktaskwindow.h \
+    ksingletaskview.h
 
 FORMS += \
         mainwindow.ui \
-    ktaskwindow.ui
+    ktaskwindow.ui \
+    ksingletaskview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

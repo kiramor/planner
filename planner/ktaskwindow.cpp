@@ -45,8 +45,9 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
         //name header
         ui->twTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
         //add.. info header
+        //ui->twTable->verticalHeader()->setMaximumSectionSize(1);
+        ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
 
-        //ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 
 
 
@@ -95,17 +96,17 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
             ui->twTable->setItem(row, 1, itm);*/
 
 
-            /*QTableWidgetItem* itm2 = new QTableWidgetItem("n/a");
-            itm2->setData(2, tsk.AdditionalInfo);
-            itm2->setText("n/a");
-            ui->twTable->setItem(1, 1, itm2);
-            QTableWidgetItem* itm3 = new QTableWidgetItem("n/a");
-            itm3->setData(2, tsk.AdditionalInfo);
-            ui->twTable->setItem(2, 1, itm3);
-            int max = 50;
+            QTableWidgetItem* itm2 = new QTableWidgetItem(tsk.AdditionalInfo);
+            //itm2->setData(2, tsk.AdditionalInfo);
+            //itm2->setText("n/a");
+            ui->twTable->setItem(row, 1, itm2);
+            //QTableWidgetItem* itm3 = new QTableWidgetItem("n/a");
+            //itm3->setData(2, tsk.AdditionalInfo);
+            //ui->twTable->setItem(2, 1, itm3);
+            //int max = 50;
             //item->
-            ui->twTable->setRowHeight(1, max);*/
-            ui->twTable->hideColumn(1);
+            //ui->twTable->setRowHeight(1, max);
+            //ui->twTable->hideColumn(1);
 
 
 
@@ -114,14 +115,13 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
 
 
 
-
+//"Line 1 \n Line 2"
             row++;
-
-
-
-
-
         }
+        QTableWidgetItem* itm2 = new QTableWidgetItem("jnhbvgfcdxsewaedrftghyujikjuy7t \n rfedswadfcvgbhnjuhygtfrdesxdcfvgbhnjuhygtfr");
+        //itm2->setData(2, tsk.AdditionalInfo);
+        //itm2->setText("n/a");
+        ui->twTable->setItem(0, 1, itm2);
 }
 
 void KTaskWindow::on_pbAccept_clicked()
@@ -158,7 +158,7 @@ void KTaskWindow::on_pbAccept_clicked()
 
 void KTaskWindow::on_twTable_cellDoubleClicked(int row, int column)
 {
-    if (column==1)
+    if (column==2)
     {
         if (ui->twTable->item(row, column)->text() == sDone)
         {
@@ -204,7 +204,11 @@ void KTaskWindow::on_twTable_customContextMenuRequested(const QPoint &pos)
 void KTaskWindow::on_twTable_itemSelectionChanged()
 {
 
-    ui->twTable->showColumn(1);
+    /*for (int i = 0; i<ui->twTable->rowCount(); i++)
+    {
+        ui->twTable->verticalHeader()->setSectionResizeMode(i, QHeaderView::Fixed);
+    }*/
+    //ui->twTable->showColumn(1);
     /*for (int i=0; i<ui->twTable->rowCount(); i++)
     {
         ui->twTable->item(i, 1)->setText("n/a");
@@ -221,7 +225,7 @@ void KTaskWindow::on_twTable_itemSelectionChanged()
         //qDebug() <<"selected Item" <<ui->twTable->item(r, 1)->text();
         //ui->twTable->hideRow()
 
-        //ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+        ui->twTable->verticalHeader()->setSectionResizeMode(i, QHeaderView::Stretch);
         //ui->twTable->item(1,1)->setText(ui->twTable->item(1,1)->data(2).toString());
     }
 }

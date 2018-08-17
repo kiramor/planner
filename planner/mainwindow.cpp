@@ -3,6 +3,8 @@
 #include "kdatabase.h"
 #include "kjsontools.h"
 #include "ktaskwindow.h"
+#include "ksingletaskview.h"
+
 #include <QDebug>
 
 #include <QDialog>
@@ -235,3 +237,26 @@ void MainWindow::on_pbHomework_clicked()
     tw->show();
 }
 
+
+void MainWindow::on_lwStudy_itemDoubleClicked(QListWidgetItem *item)
+{
+    qDebug() <<"you double clicked!!";
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    int cr =ui->lwStudy->currentRow();
+    KTask& tsk = (thisDay->getListStudy()[cr]);
+    KSingleTaskView* stw = new KSingleTaskView(tsk, this);
+    QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::updateGuiForOpenDay);
+
+
+    stw->show();
+}
+
+void MainWindow::on_lwStudy_itemClicked(QListWidgetItem *item)
+{
+    /*KSingleTaskView* stw = new KSingleTaskView(this);
+    qDebug() <<"you clicked!!";
+
+    //stw->setWindowModality(Qt::WindowModal);
+    //QObject::connect(stw, &KSpecialTaskView::TaskWindowClosed, this, &MainWindow::updateGuiForOpenDay);
+    stw->show();*/
+}

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QDate>
+#include <QListWidget>
+
 
 namespace Ui {
 class MainWindow;
@@ -44,9 +46,15 @@ private:
 private slots:
     void updateGuiForOpenDay();
 
+
+    void on_lwStudy_itemDoubleClicked(QListWidgetItem *item);
+    void on_lwStudy_itemClicked(QListWidgetItem *item);
+
+
 private:
     void clearGui();    
     void updateTaskWidget(QVector<KTask> &container, QListWidget *lw);
+
 
 };
 
