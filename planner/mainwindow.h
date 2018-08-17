@@ -51,6 +51,10 @@ private slots:
     void on_lwStudy_itemClicked(QListWidgetItem *item);
 
 
+    void on_lwToDo_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_lwHome_itemDoubleClicked(QListWidgetItem *item);
+
 private:
     void clearGui();    
     void updateTaskWidget(QVector<KTask> &container, QListWidget *lw);

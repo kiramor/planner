@@ -260,3 +260,29 @@ void MainWindow::on_lwStudy_itemClicked(QListWidgetItem *item)
     //QObject::connect(stw, &KSpecialTaskView::TaskWindowClosed, this, &MainWindow::updateGuiForOpenDay);
     stw->show();*/
 }
+
+void MainWindow::on_lwToDo_itemDoubleClicked(QListWidgetItem *item)
+{
+    qDebug() <<"you double clicked!!";
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    int cr =ui->lwToDo->currentRow();
+    KTask& tsk = (thisDay->getListToDo()[cr]);
+    KSingleTaskView* stw = new KSingleTaskView(tsk, this);
+    QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::updateGuiForOpenDay);
+
+
+    stw->show();
+}
+
+void MainWindow::on_lwHome_itemDoubleClicked(QListWidgetItem *item)
+{
+    qDebug() <<"you double clicked!!";
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    int cr =ui->lwHome->currentRow();
+    KTask& tsk = (thisDay->getListHomework()[cr]);
+    KSingleTaskView* stw = new KSingleTaskView(tsk, this);
+    QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::updateGuiForOpenDay);
+
+
+    stw->show();
+}
