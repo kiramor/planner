@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QIntValidator>
+#include <QPlainTextEdit>
 //#include <QList>
 
 KTaskWindow::KTaskWindow(QVector<KTask> &container, QWidget *parent) :
@@ -45,18 +46,13 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
         //name header
         ui->twTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
         //add.. info header
-        //ui->twTable->verticalHeader()->setMaximumSectionSize(1);
-        ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
-
-
-
-
-
-
+        ui->twTable->verticalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
         //done header
         ui->twTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
         //priority header
         ui->twTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+        //vertical header
+        ui->twTable->verticalHeader()->setMinimumSectionSize(60);
 
 
         int row = 0;
@@ -96,17 +92,13 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
             ui->twTable->setItem(row, 1, itm);*/
 
 
-            QTableWidgetItem* itm2 = new QTableWidgetItem(tsk.AdditionalInfo);
-            //itm2->setData(2, tsk.AdditionalInfo);
-            //itm2->setText("n/a");
-            ui->twTable->setItem(row, 1, itm2);
-            //QTableWidgetItem* itm3 = new QTableWidgetItem("n/a");
-            //itm3->setData(2, tsk.AdditionalInfo);
-            //ui->twTable->setItem(2, 1, itm3);
-            //int max = 50;
-            //item->
-            //ui->twTable->setRowHeight(1, max);
-            //ui->twTable->hideColumn(1);
+            //QTableWidgetItem* itm2 = new QTableWidgetItem();
+            QPlainTextEdit* pte = new QPlainTextEdit();
+            //pte->appendPlainText(tsk.AdditionalInfo);
+            pte->appendPlainText("lkjhgfdsazxcvbnhjmklkijuhygtfredsxcvbnhjkljhgtfrdesxcvbnhjkljhgtfrdcvbnjmkmjhgtfdc");
+            ui->twTable->setCellWidget(row, 1, pte);
+
+
 
 
 
@@ -118,10 +110,10 @@ void KTaskWindow::fillTable(QVector<KTask> &container)
 //"Line 1 \n Line 2"
             row++;
         }
-        QTableWidgetItem* itm2 = new QTableWidgetItem("jnhbvgfcdxsewaedrftghyujikjuy7t \n rfedswadfcvgbhnjuhygtfrdesxdcfvgbhnjuhygtfr");
+        /*QTableWidgetItem* itm2 = new QTableWidgetItem("jnhbvgfcdxsewaedrftghyujikjuy7t \n rfedswadfcvgbhnjuhygtfrdesxdcfvgbhnjuhygtfr");
         //itm2->setData(2, tsk.AdditionalInfo);
         //itm2->setText("n/a");
-        ui->twTable->setItem(0, 1, itm2);
+        ui->twTable->setItem(0, 1, itm2);*/
 }
 
 void KTaskWindow::on_pbAccept_clicked()
@@ -203,29 +195,20 @@ void KTaskWindow::on_twTable_customContextMenuRequested(const QPoint &pos)
 
 void KTaskWindow::on_twTable_itemSelectionChanged()
 {
+    int n=50;
+    ui->twTable->verticalHeader()->setMaximumSectionSize(n);
+    ui->twTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
 
-    /*for (int i = 0; i<ui->twTable->rowCount(); i++)
+    for (int i = 0; i<ui->twTable->rowCount(); i++)
     {
         ui->twTable->verticalHeader()->setSectionResizeMode(i, QHeaderView::Fixed);
-    }*/
-    //ui->twTable->showColumn(1);
-    /*for (int i=0; i<ui->twTable->rowCount(); i++)
-    {
-        ui->twTable->item(i, 1)->setText("n/a");
-    }*/
+    }
+
 
 
     for (int i = 0; i<ui->twTable->selectedItems().size(); i++)
     {
-        //QList <QTableWidgetItem*> list = ui->twTable->selectedItems();
-        //QList <QTableWidgetItem*> list = new QList <QTableWidgetItem*>(ui->twTable->selectedItems());
-        //int r=ui->twTable->selectedItems()[i]->row();
-        //qDebug() <<"selected Item" <<ui->twTable->item(1,1)->data(2);
-        //ui->twTable->item(r, 1)->setText(Tasks[r].AdditionalInfo);
-        //qDebug() <<"selected Item" <<ui->twTable->item(r, 1)->text();
-        //ui->twTable->hideRow()
-
-        ui->twTable->verticalHeader()->setSectionResizeMode(i, QHeaderView::Stretch);
-        //ui->twTable->item(1,1)->setText(ui->twTable->item(1,1)->data(2).toString());
+        int r=ui->twTable->selectedItems()[i]->row();
+        ui->twTable->verticalHeader()->setSectionResizeMode(r, QHeaderView::Stretch);
     }
 }
