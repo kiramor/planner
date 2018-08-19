@@ -140,12 +140,16 @@ void KDataBase::writeToJson(QJsonObject& json) const
     //Days
     QJsonArray ar;
     for (const KDay* day : Days)
+    {
+        if (!day) continue;
         if ( !day->isDayEmpty() )
         {
             QJsonObject js;
             day->writeToJson(js);
             ar.append(js);
         }
+    }
+
     json["Days"] = ar;
 
     //everything else

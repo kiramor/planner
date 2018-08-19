@@ -19,6 +19,7 @@ MainWindow::MainWindow(KDataBase &dataBase, QWidget *parent) :
     ui->lwToDo->setDragDropMode(QAbstractItemView::DragDrop);
     ui->lwToDo->setDefaultDropAction(Qt::MoveAction);
 
+    loadBase();
     updateGuiForOpenDay();
 }
 
@@ -102,50 +103,153 @@ void MainWindow::updateTaskWidget(QVector<KTask> &container, QListWidget *lw)
     }
 }
 
+void MainWindow::addNewTask()
+{
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    KTask tsk;
+    qDebug() <<"addnewtaskclicked";
+
+    if (ui->lwStudy->hasFocus())
+    {
+        thisDay->getListStudy().append(tsk);
+        openKSingleView(tsk);
+    }
+    else if (ui->lwToDo->hasFocus())
+    {
+        thisDay->getListToDo().append(tsk);
+        qDebug() <<"appended to "<< "getListToDo()";
+        openKSingleView(tsk);
+    }
+    else if (ui->lwHome->hasFocus())
+    {
+        thisDay->getListHomework().append(tsk);
+        openKSingleView(tsk);
+    }
+
+
+}
+
+void MainWindow::createActions()
+{
+    /*QAction*newAct = new QAction(tr("&New"), this);
+    //newAct->setShortcuts(QKeySequence::New);
+    newAct->setStatusTip(tr("Create a new Task"));
+    connect(newAct, &QAction::triggered, this, &MainWindow::addNewTask);*/
+
+}
+
+void MainWindow::createMenu()
+{
+
+}
+
+void MainWindow::openKSingleView_ToDo()
+{
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    int cr =ui->lwToDo->currentRow();
+    KTask& tsk = (thisDay->getListToDo()[cr]);
+    openKSingleView(tsk);
+}
+
+void MainWindow::openKSingleView_Study()
+{
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    int cr =ui->lwStudy->currentRow();
+    KTask& tsk = (thisDay->getListStudy()[cr]);
+    openKSingleView(tsk);
+}
+
+void MainWindow::openKSingleView_Home()
+{
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    int cr =ui->lwHome->currentRow();
+    KTask& tsk = (thisDay->getListHomework()[cr]);
+    openKSingleView(tsk);
+}
+
+void MainWindow::openKSingleView(KTask &tsk)
+{
+    KSingleTaskView* stw = new KSingleTaskView(tsk, this);
+    QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::updateGuiForOpenDay);
+
+
+    stw->show();
+}
+
 
 
 
 #include <QMenu>
 void MainWindow::on_lwToDo_customContextMenuRequested(const QPoint &pos)
 {
+    QVector<KTask> &container = DataBase.getDay(OpenDate)->getListToDo();
+    customContextMenuForWidget(pos, ui->lwToDo, container);
+
+}
+
+void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widget, QVector<KTask> &container)
+{
     QMenu m;
     int row = -1;
 
     //QString shownItemType;
-    QListWidgetItem* temp = ui->lwToDo->itemAt(pos);
+    QListWidgetItem* temp = widget->itemAt(pos);
 
     QAction* toggleDone = 0;
 
     if (temp)
       {
         //menu triggered at a valid item
-        row = ui->lwToDo->row(temp);
+        row = widget->row(temp);
 
         m.addSeparator();
         toggleDone = m.addAction("Change done state");
-      }
-    m.addSeparator();
-    //QAction* blabla = m.addAction("Do blabla");
-    m.addSeparator();
 
-    QAction* selectedItem = m.exec(ui->lwToDo->mapToGlobal(pos));
-    if (!selectedItem) return; //nothing was selected
+      }
+
+    m.addSeparator();
+    QAction* newTask = m.addAction("Create new Task");
+    //m.addSeparator();
+
+    QAction* selectedItem = m.exec(widget->mapToGlobal(pos));
+
+    if (!selectedItem)//nothing was selected
+    {
+        qDebug() <<"nothing selected";
+        return;
+    }
 
     if (selectedItem == toggleDone)
     {
         int currentTask = row;
         if (DataBase.isDayExist(OpenDate))
         {
-            KDay* thisDay = DataBase.getDay(OpenDate);
-            if (currentTask < thisDay->getListToDo().size())
+            //KDay* thisDay = DataBase.getDay(OpenDate);
+            if (currentTask < container.size())
                 //qDebug() <<"huh wanna toggle?";
-                thisDay->getListToDo()[currentTask].toggleAcomplishedStatus();
+                container[currentTask].toggleAcomplishedStatus();
             updateGuiForOpenDay();
         }
-        else
-            qDebug() << "!!!!!----------  OpenDay does not exist";
+
+    }
+
+    else if (selectedItem == newTask)
+    {
+        qDebug() <<"selected item= new task";
+        if (DataBase.isDayExist(OpenDate))
+        {
+            addNewTask();
+            updateGuiForOpenDay();
+        }
+
+        //updateGuiForOpenDay();
+    }
+    else
+    {
+        qDebug() << "!!!!!----------  OpenDay does not exist";
     }
 }
+
 
 void MainWindow::on_actionSave_triggered()
 {
@@ -155,6 +259,7 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionLoad_triggered()
 {
     loadBase();
+    updateGuiForOpenDay();
 }
 
 void MainWindow::on_pbCalendar_clicked()
@@ -241,7 +346,7 @@ void MainWindow::on_pbHomework_clicked()
 
 void MainWindow::on_lwStudy_itemDoubleClicked(QListWidgetItem *item)
 {
-    qDebug() <<"you double clicked!!";
+    /*qDebug() <<"you double clicked!!";
     KDay* thisDay = DataBase.getDay(OpenDate);
     int cr =ui->lwStudy->currentRow();
     KTask& tsk = (thisDay->getListStudy()[cr]);
@@ -249,7 +354,8 @@ void MainWindow::on_lwStudy_itemDoubleClicked(QListWidgetItem *item)
     QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::updateGuiForOpenDay);
 
 
-    stw->show();
+    stw->show();*/
+    openKSingleView_Study();
 }
 
 void MainWindow::on_lwStudy_itemClicked(QListWidgetItem *item)
@@ -264,7 +370,7 @@ void MainWindow::on_lwStudy_itemClicked(QListWidgetItem *item)
 
 void MainWindow::on_lwToDo_itemDoubleClicked(QListWidgetItem *item)
 {
-    qDebug() <<"you double clicked!!";
+    /*qDebug() <<"you double clicked!!";
     KDay* thisDay = DataBase.getDay(OpenDate);
     int cr =ui->lwToDo->currentRow();
     KTask& tsk = (thisDay->getListToDo()[cr]);
@@ -272,18 +378,32 @@ void MainWindow::on_lwToDo_itemDoubleClicked(QListWidgetItem *item)
     QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::updateGuiForOpenDay);
 
 
-    stw->show();
+    stw->show();*/
+    openKSingleView_ToDo();
 }
 
 void MainWindow::on_lwHome_itemDoubleClicked(QListWidgetItem *item)
 {
     qDebug() <<"you double clicked!!";
-    KDay* thisDay = DataBase.getDay(OpenDate);
+    /*KDay* thisDay = DataBase.getDay(OpenDate);
     int cr =ui->lwHome->currentRow();
     KTask& tsk = (thisDay->getListHomework()[cr]);
     KSingleTaskView* stw = new KSingleTaskView(tsk, this);
     QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::updateGuiForOpenDay);
 
 
-    stw->show();
+    stw->show();*/
+    openKSingleView_Home();
+}
+
+void MainWindow::on_lwStudy_customContextMenuRequested(const QPoint &pos)
+{
+    QVector<KTask> &container = DataBase.getDay(OpenDate)->getListStudy();
+    customContextMenuForWidget(pos, ui->lwStudy, container);
+}
+
+void MainWindow::on_lwHome_customContextMenuRequested(const QPoint &pos)
+{
+    QVector<KTask> &container = DataBase.getDay(OpenDate)->getListHomework();
+    customContextMenuForWidget(pos, ui->lwHome, container);
 }

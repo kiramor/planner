@@ -26,7 +26,7 @@ public:
 
 private slots:
     void on_pbTest1_clicked();
-    void on_lwToDo_customContextMenuRequested(const QPoint &pos);
+
     void on_actionSave_triggered();
     void on_actionLoad_triggered();
     void on_pbCalendar_clicked();
@@ -46,7 +46,6 @@ private:
 private slots:
     void updateGuiForOpenDay();
 
-
     void on_lwStudy_itemDoubleClicked(QListWidgetItem *item);
     void on_lwStudy_itemClicked(QListWidgetItem *item);
 
@@ -55,10 +54,24 @@ private slots:
 
     void on_lwHome_itemDoubleClicked(QListWidgetItem *item);
 
+    void on_lwStudy_customContextMenuRequested(const QPoint &pos);
+
+    void on_lwHome_customContextMenuRequested(const QPoint &pos);
+
+    void on_lwToDo_customContextMenuRequested(const QPoint &pos);
+
+    void customContextMenuForWidget(const QPoint &pos, QListWidget *widget, QVector<KTask> &container);
+
 private:
     void clearGui();    
     void updateTaskWidget(QVector<KTask> &container, QListWidget *lw);
-
+    void addNewTask();
+    void createActions();
+    void createMenu();
+    void openKSingleView_ToDo();
+    void openKSingleView_Study();
+    void openKSingleView_Home();
+    void openKSingleView(KTask &tsk);
 
 };
 

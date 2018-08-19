@@ -54,6 +54,7 @@ public:
     void addToList(const KTask& todo, QVector<KTask> &list);
     //void addHome(const KTask& home);
     //void addStudy(const KTask& study);
+    //void addNewTask(QVector<KTask> *container);
 
 
     void print() const;

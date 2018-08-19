@@ -22,6 +22,16 @@ void KDay::writeToJson(QJsonObject &json) const
     for (const KTask& task : ToDo)
         ar << task.writeToJson();
     json["ToDo"] = ar;
+
+    QJsonArray ar1;
+    for (const KTask& task : Study)
+        ar1 << task.writeToJson();
+    json["Study"] = ar1;
+
+    QJsonArray ar2;
+    for (const KTask& task : Homework)
+        ar2 << task.writeToJson();
+    json["Homework"] = ar2;
 }
 
 void KDay::readFromJson(const QJsonObject &json)
@@ -42,6 +52,30 @@ void KDay::readFromJson(const QJsonObject &json)
         KTask task;
         task.readFromJson(js);
         ToDo << task;
+
+    }
+
+    Study.clear();
+    QJsonArray ar1;
+    parseJson(json, "Study", ar1);
+    for (int i=0; i<ar1.size(); i++)
+    {
+        QJsonObject js = ar1.at(i).toObject();
+        KTask task;
+        task.readFromJson(js);
+        Study << task;
+
+    }
+
+    Homework.clear();
+    QJsonArray ar2;
+    parseJson(json, "Homework", ar2);
+    for (int i=0; i<ar2.size(); i++)
+    {
+        QJsonObject js = ar2.at(i).toObject();
+        KTask task;
+        task.readFromJson(js);
+        Homework << task;
 
     }
 }

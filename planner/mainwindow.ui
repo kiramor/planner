@@ -119,7 +119,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QListWidget" name="lwStudy"/>
+            <widget class="QListWidget" name="lwStudy">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -133,7 +137,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QListWidget" name="lwHome"/>
+            <widget class="QListWidget" name="lwHome">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
