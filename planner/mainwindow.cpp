@@ -24,6 +24,7 @@ MainWindow::MainWindow(KDataBase &dataBase, QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    saveBase();
     delete ui;
 }
 
