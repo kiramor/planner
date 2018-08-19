@@ -196,6 +196,7 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
     QListWidgetItem* temp = widget->itemAt(pos);
 
     QAction* toggleDone = 0;
+    QAction* deleteTask = 0;
 
     if (temp)
       {
@@ -205,12 +206,14 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
         m.addSeparator();
         toggleDone = m.addAction("Change done state");
 
+        m.addSeparator();
+        deleteTask = m.addAction("Delete task");
+
       }
 
     m.addSeparator();
-    QAction* newTask = m.addAction("Create new Task");
-    //m.addSeparator();
-
+    QAction* newTask = m.addAction("Create new task");
+    //
     QAction* selectedItem = m.exec(widget->mapToGlobal(pos));
 
     if (!selectedItem)//nothing was selected
@@ -241,9 +244,18 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
             addNewTask();
             updateGuiForOpenDay();
         }
-
-        //updateGuiForOpenDay();
     }
+    else if (selectedItem == deleteTask)
+    {
+        qDebug() <<"selected item= delete Task";
+        if (DataBase.isDayExist(OpenDate))
+        {
+
+            container.remove(row);
+            updateGuiForOpenDay();
+        }
+    }
+
     else
     {
         qDebug() << "!!!!!----------  OpenDay does not exist";
