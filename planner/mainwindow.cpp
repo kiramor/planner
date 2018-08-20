@@ -212,6 +212,7 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
 
     QAction* toggleDone = 0;
     QAction* deleteTask = 0;
+    QAction* copyTask = 0;
 
     if (temp)
       {
@@ -224,7 +225,12 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
         m.addSeparator();
         deleteTask = m.addAction("Delete task");
 
+        m.addSeparator();
+        copyTask = m.addAction("Copy task");
+
       }
+    m.addSeparator();
+    QAction* pasteTask = m.addAction("Paste task");
 
     m.addSeparator();
     QAction* newTask = m.addAction("Create new task");
@@ -236,16 +242,33 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
         qDebug() <<"nothing selected";
         return;
     }
+    int currentTask = row;
+    QString copyName;
+    QString copyAInfo;
+    int copyPriority;
+    bool copyDone;
 
     if (selectedItem == toggleDone)
     {
-        int currentTask = row;
+        //int currentTask = row;
         if (DataBase.isDayExist(OpenDate))
         {
             //KDay* thisDay = DataBase.getDay(OpenDate);
             if (currentTask < container.size())
                 //qDebug() <<"huh wanna toggle?";
                 container[currentTask].toggleAcomplishedStatus();
+            updateGuiForOpenDay();
+        }
+
+    }
+    else if (selectedItem == copyTask)
+    {
+        if (DataBase.isDayExist(OpenDate))
+        {
+            copyName = (container[currentTask].Name);
+            copyAInfo = (container[currentTask].AdditionalInfo);
+            copyPriority = (container[currentTask].Priority);
+            copyDone = (container[currentTask].Acomplished);
             updateGuiForOpenDay();
         }
 
@@ -258,6 +281,32 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
         {
             addNewTask();
             //updateGuiForOpenDay();
+        }
+    }
+    else if (selectedItem == pasteTask)
+    {
+        qDebug() <<"selected item= new task";
+        if (DataBase.isDayExist(OpenDate))
+        {
+            KDay* thisDay = DataBase.getDay(OpenDate);
+            //KTask (copyName, copyAInfo, copyDone, copyPriority);
+        /*
+            if (ui->lwStudy->hasFocus())
+            {
+                thisDay->getListStudy().append(tsk);
+
+                //updateGuiForOpenDay();
+            }
+            else if (ui->lwToDo->hasFocus())
+            {
+                thisDay->getListToDo().append(tsk);
+                openKSingleView(thisDay->getListToDo().last());
+            }
+            else if (ui->lwHome->hasFocus())
+            {
+                thisDay->getListHomework().append(tsk);
+                openKSingleView(thisDay->getListHomework().last());
+            }*/
         }
     }
     else if (selectedItem == deleteTask)
