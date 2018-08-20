@@ -62,6 +62,8 @@ private slots:
 
     void customContextMenuForWidget(const QPoint &pos, QListWidget *widget, QVector<KTask> &container);
 
+    void tempfun();
+
 private:
     void clearGui();    
     void updateTaskWidget(QVector<KTask> &container, QListWidget *lw);

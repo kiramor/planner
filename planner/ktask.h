@@ -23,6 +23,7 @@ public:
     void              writeToJson(QJsonObject& json) const;
     const QJsonObject writeToJson() const;
     void              readFromJson(const QJsonObject& json);
+    void print();
 };
 
 #endif // KTASK_H

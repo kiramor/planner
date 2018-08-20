@@ -42,3 +42,15 @@ void KTask::readFromJson(const QJsonObject &json)
     parseJson(json, "AdditionalInfo", AdditionalInfo);
 }
 
+void KTask::print()
+{
+    /*qDebug() << "***************";
+    qDebug() << "Number of ToDos:"<<Name;
+    qDebug() << "Number of Studies:"<<AdditionalInfo;
+    qDebug() << "Lineked to # of special tasks:"<<Acomplished;
+    qDebug() << "Number of Homeworks:"<<Priority;
+    //qDebug() << "-----------------";*/
+    qDebug() << "*" <<Name <<AdditionalInfo <<Acomplished <<Priority;
+    qDebug() << "***************";
+}
+

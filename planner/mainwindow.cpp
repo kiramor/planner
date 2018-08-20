@@ -107,23 +107,24 @@ void MainWindow::addNewTask()
 {
     KDay* thisDay = DataBase.getDay(OpenDate);
     KTask tsk;
-    qDebug() <<"addnewtaskclicked";
+    //tsk.Name = "helllo";
+    //qDebug() <<"addnewtaskclicked";
 
     if (ui->lwStudy->hasFocus())
     {
         thisDay->getListStudy().append(tsk);
-        openKSingleView(tsk);
+        openKSingleView(thisDay->getListStudy().last());
+        //updateGuiForOpenDay();
     }
     else if (ui->lwToDo->hasFocus())
     {
         thisDay->getListToDo().append(tsk);
-        qDebug() <<"appended to "<< "getListToDo()";
-        openKSingleView(tsk);
+        openKSingleView(thisDay->getListToDo().last());
     }
     else if (ui->lwHome->hasFocus())
     {
         thisDay->getListHomework().append(tsk);
-        openKSingleView(tsk);
+        openKSingleView(thisDay->getListHomework().last());
     }
 
 
@@ -170,10 +171,24 @@ void MainWindow::openKSingleView_Home()
 void MainWindow::openKSingleView(KTask &tsk)
 {
     KSingleTaskView* stw = new KSingleTaskView(tsk, this);
+    stw->setWindowModality(Qt::WindowModal);
     QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::updateGuiForOpenDay);
+    //QObject::connect(stw, &KSingleTaskView::STaskViewClosed, this, &MainWindow::tempfun);
+    KDay* thisDay = DataBase.getDay(OpenDate);
 
+    for (KTask&tsk:thisDay->getListStudy())
+    {
+        tsk.print();
+    }
 
     stw->show();
+    qDebug() <<"stw->show()\n-----------------------";
+
+    /*for (KTask&tsk:thisDay->getListStudy())
+    {
+        tsk.print();
+    }*/
+    //
 }
 
 
@@ -242,7 +257,7 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
         if (DataBase.isDayExist(OpenDate))
         {
             addNewTask();
-            updateGuiForOpenDay();
+            //updateGuiForOpenDay();
         }
     }
     else if (selectedItem == deleteTask)
@@ -250,7 +265,6 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
         qDebug() <<"selected item= delete Task";
         if (DataBase.isDayExist(OpenDate))
         {
-
             container.remove(row);
             updateGuiForOpenDay();
         }
@@ -259,6 +273,15 @@ void MainWindow::customContextMenuForWidget(const QPoint &pos, QListWidget *widg
     else
     {
         qDebug() << "!!!!!----------  OpenDay does not exist";
+    }
+}
+
+void MainWindow::tempfun()
+{
+    KDay* thisDay = DataBase.getDay(OpenDate);
+    for (KTask&tsk:thisDay->getListStudy())
+    {
+        tsk.print();
     }
 }
 
