@@ -17,6 +17,7 @@ bool parseJson(const QJsonObject &json, const QString &key, float &var);
 bool parseJson(const QJsonObject &json, const QString &key, QString &var);
 bool parseJson(const QJsonObject &json, const QString &key, QJsonArray &var);
 bool parseJson(const QJsonObject &json, const QString &key, QJsonObject &obj);
+bool parseJson(const QJsonObject &json, const QString &key, qint64 &var);
 
 void JsonToCheckbox(QJsonObject& json, QString key, QCheckBox* cb);
 void JsonToSpinBox(QJsonObject& json, QString key, QSpinBox* sb);

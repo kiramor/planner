@@ -32,7 +32,8 @@ SOURCES += \
     kjsontools.cpp \
     kgradedst.cpp \
     ktaskwindow.cpp \
-    ksingletaskview.cpp
+    ksingletaskview.cpp \
+    kevent.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     kspecialtask.h \
     kgradedst.h \
     ktaskwindow.h \
-    ksingletaskview.h
+    ksingletaskview.h \
+    kevent.h
 
 FORMS += \
         mainwindow.ui \

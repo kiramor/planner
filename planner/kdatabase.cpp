@@ -1,5 +1,6 @@
 #include "kdatabase.h"
 #include "kjsontools.h"
+#include "kevent.h"
 
 #include <QDate>
 #include <QDebug>
@@ -12,8 +13,17 @@ KDataBase::KDataBase()
 void KDataBase::clearBase()
 {
     for (KDay* day : Days) delete day;
-
     Days = QVector<KDay*>(maxDaysInBase, 0);
+
+    QMapIterator<qint64, KEvent*> iterator(Events);
+    while (iterator.hasNext())
+    {
+        iterator.next();
+
+        const KEvent* event = iterator.value();
+        delete event;
+    }
+    Events.clear();
 }
 
 void KDataBase::printDay(QDate &dt)
@@ -149,8 +159,21 @@ void KDataBase::writeToJson(QJsonObject& json) const
             ar.append(js);
         }
     }
-
     json["Days"] = ar;
+
+    //Events
+    ar = QJsonArray(); //to clear
+    QMapIterator<qint64, KEvent*> iterator(Events);
+    while (iterator.hasNext())
+    {
+        iterator.next();
+
+        QJsonObject js;
+        const KEvent* event = iterator.value();
+        event->writeToJson(js);
+        ar.append(js);
+    }
+    json["Events"] = ar;
 
     //everything else
 }
@@ -159,12 +182,13 @@ void KDataBase::readFromJson(const QJsonObject &json)
 {
     clearBase();
 
+    //days
     QJsonArray ar;
     parseJson(json, "Days", ar);
     for (int i=0; i<ar.size(); i++)
     {
-        KDay* day = new KDay();
         const QJsonObject js = ar.at(i).toObject();
+        KDay* day = new KDay();
         day->readFromJson(js);
 
         int index = DateToIndex(day->getDay(), day->getMonth(), day->getYear());
@@ -174,6 +198,17 @@ void KDataBase::readFromJson(const QJsonObject &json)
             qDebug() << "Something went wrong...";
     }
 
+    //events
+    ar = QJsonArray(); //clear
+    parseJson(json, "Events", ar);
+    for (int i=0; i<ar.size(); i++)
+    {
+        const QJsonObject js = ar.at(i).toObject();
+        KEvent* event = new KEvent();
+        event->readFromJson(js);
+
+        Events.insert(event->getId(), event);
+    }
 }
 
 int KDataBase::DateToIndex(int day, int month, int year) const

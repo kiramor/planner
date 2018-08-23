@@ -2,8 +2,11 @@
 #define KDATABASE_H
 
 #include <Qvector>
+#include <QMap>
 
 #include "kday.h"
+
+class KEvent;
 
 class KDataBase
 {
@@ -22,6 +25,8 @@ public:
 private:
     const int maxDaysInBase = 36500;
     QVector<KDay*> Days;
+
+    QMap<qint64, KEvent*> Events;
 
     bool isDayExist(int index) const;
     bool createDay(int index);

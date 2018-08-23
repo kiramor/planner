@@ -51,6 +51,16 @@ bool parseJson(const QJsonObject &json, const QString &key, float &var)
   else return false;
 }
 
+bool parseJson(const QJsonObject &json, const QString &key, qint64 &var)
+{
+    if (json.contains(key))
+      {
+        var = json[key].toDouble();
+        return true;
+      }
+    else return false;
+}
+
 bool parseJson(const QJsonObject &json, const QString &key, QString &var)
 {
   if (json.contains(key))
